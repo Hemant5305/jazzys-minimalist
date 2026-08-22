@@ -7,17 +7,17 @@ export const currentUser = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return null;
 
-    // identity.subject is the Convex user ID
+    // Convex Auth stores users with _id = identity.subject
     const user = await ctx.db.get(identity.subject as any);
     if (!user) return null;
 
     return {
       _id: user._id,
-      name: "name" in user ? (user as { name?: string }).name : undefined,
-      email: "email" in user ? (user as { email?: string }).email : undefined,
-      image: "image" in user ? (user as { image?: string }).image : undefined,
-      role: "role" in user ? (user as { role?: string }).role : undefined,
-      isAnonymous: "isAnonymous" in user ? (user as { isAnonymous?: boolean }).isAnonymous : undefined,
+      name: "name" in user ? (user as any).name : undefined,
+      email: "email" in user ? (user as any).email : undefined,
+      image: "image" in user ? (user as any).image : undefined,
+      role: "role" in user ? (user as any).role : undefined,
+      isAnonymous: "isAnonymous" in user ? (user as any).isAnonymous : undefined,
     };
   },
 });
