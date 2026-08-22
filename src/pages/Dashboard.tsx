@@ -42,12 +42,12 @@ export default function Dashboard() {
     }
   }, [seeded, seedMutation]);
 
-  const handleAddToCart = async (product: any) => {
+  const handleAddToCart = async (product: any, quantity = 1) => {
     if (!user) {
       navigate("/auth?returnTo=/shop");
       return;
     }
-    await addToCart({ userId: (user as any)._id, productId: product._id });
+    await addToCart({ userId: (user as any)._id, productId: product._id, quantity });
   };
 
   const filteredProducts = (products ?? []).filter((p) => {

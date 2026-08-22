@@ -42,12 +42,12 @@ export default function Landing() {
   const updateQuantity = useMutation(api.cart.updateQuantity);
   const removeFromCart = useMutation(api.cart.removeFromCart);
 
-  const handleAddToCart = async (product: any) => {
+  const handleAddToCart = async (product: any, quantity = 1) => {
     if (!isAuthenticated || !user) {
       navigate("/auth?returnTo=/");
       return;
     }
-    await addToCart({ userId: (user as any)._id, productId: product._id });
+    await addToCart({ userId: (user as any)._id, productId: product._id, quantity });
   };
 
   const seedMutation = useMutation(api.seed.seedProducts);

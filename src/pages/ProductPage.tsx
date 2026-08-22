@@ -273,7 +273,7 @@ export default function ProductPage() {
                   key={p._id}
                   product={p as any}
                   index={i}
-                  onAddToCart={async () => {
+                  onAddToCart={async (_product, qty = 1) => {
                     if (!isAuthenticated || !user) {
                       navigate("/auth");
                       return;
@@ -281,6 +281,7 @@ export default function ProductPage() {
                     await addToCart({
                       userId: user._id,
                       productId: p._id,
+                      quantity: qty,
                     });
                   }}
                 />

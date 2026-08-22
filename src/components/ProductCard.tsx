@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import { Star, ShoppingBag } from "lucide-react";
+import { Star, ShoppingBag, Minus, Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 
@@ -24,12 +25,14 @@ export function ProductCard({
   index = 0,
 }: {
   product: Product;
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: Product, quantity: number) => void;
   index?: number;
 }) {
   const navigate = useNavigate();
+  const [showQty, setShowQty] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
 
-  // Mix up rounded corners per card so it doesn't look templated
   const corners = [
     "rounded-[14px]",
     "rounded-[10px]",
@@ -38,6 +41,14 @@ export function ProductCard({
     "rounded-[16px]",
   ];
   const cornerClass = corners[index % corners.length];
+
+  const handleAdd = () => {
+    onAddToCart?.(product, qty);
+    setAdded(true);
+    setShowQty(false);
+    setQty(1);
+    setTimeout(() => setAdded(false), 1500);
+  };
 
   return (
     <motion.div
@@ -97,17 +108,56 @@ export function ProductCard({
           <span className="text-[14px] font-semibold text-foreground">
             {formatPrice(product.price)}
           </span>
-          <Button
-            size="icon"
-            variant="outline"
-            className="size-7 rounded-full border-border/50"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart?.(product);
-            }}
-          >
-            <ShoppingBag className="size-3" />
-          </Button>
+
+          {showQty ? (
+            <div className="flex items-center gap-1">
+              <button
+                className="flex size-6 items-center justify-center rounded-full border border-border/50 transition-colors hover:bg-muted"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setQty(Math.max(1, qty - 1));
+                }}
+              >
+                <Minus className="size-2.5" />
+              </button>
+              <span className="w-5 text-center text-[12px] font-medium">
+                {qty}
+              </span>
+              <button
+                className="flex size-6 items-center justify-center rounded-full border border-border/50 transition-colors hover:bg-muted"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setQty(qty + 1);
+                }}
+              >
+                <Plus className="size-2.5" />
+              </button>
+              <button
+                className="ml-0.5 flex size-6 items-center justify-center rounded-full bg-[#c96b8b] text-white transition-colors hover:bg-[#b85d7c]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAdd();
+                }}
+              >
+                <Check className="size-3" />
+              </button>
+            </div>
+          ) : (
+            <button
+              className="flex size-7 items-center justify-center rounded-full border border-border/50 transition-colors hover:border-[#c96b8b]/30 hover:bg-[#c96b8b]/5"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (added) return;
+                setShowQty(true);
+              }}
+            >
+              {added ? (
+                <Check className="size-3 text-[#c96b8b]" />
+              ) : (
+                <ShoppingBag className="size-3" />
+              )}
+            </button>
+          )}
         </div>
       </div>
     </motion.div>
