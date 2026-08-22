@@ -278,11 +278,16 @@ export default function ProductPage() {
                       navigate("/auth");
                       return;
                     }
-                    await addToCart({
-                      userId: user._id,
-                      productId: p._id,
-                      quantity: qty,
-                    });
+                    try {
+                      await addToCart({
+                        userId: user._id,
+                        productId: p._id,
+                        quantity: qty,
+                      });
+                      setCartOpen(true);
+                    } catch (err) {
+                      console.error("Failed to add to cart:", err);
+                    }
                   }}
                 />
               ))}

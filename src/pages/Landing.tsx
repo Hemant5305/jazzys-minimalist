@@ -47,7 +47,12 @@ export default function Landing() {
       navigate("/auth?returnTo=/");
       return;
     }
-    await addToCart({ userId: (user as any)._id, productId: product._id, quantity });
+    try {
+      await addToCart({ userId: (user as any)._id, productId: product._id, quantity });
+      setCartOpen(true);
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+    }
   };
 
   const seedMutation = useMutation(api.seed.seedProducts);
@@ -159,7 +164,6 @@ export default function Landing() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
               </div>
 
-              {/* Floating card — offset, not centered */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -262,7 +266,6 @@ export default function Landing() {
       <section id="salon-booking" className="bg-[#faf8f7]">
         <div className="mx-auto max-w-[1360px] px-6 py-14 md:py-20">
           <div className="grid gap-8 md:grid-cols-2 md:items-center">
-            {/* Images — asymmetric grid, not a perfect 2-col */}
             <div className="relative">
               <div className="grid grid-cols-[1.1fr_0.9fr] gap-3">
                 <div className="flex flex-col gap-3">
@@ -300,7 +303,6 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Text + services */}
             <div className="flex flex-col gap-5 md:pl-6">
               <div>
                 <p className="mb-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#c96b8b]">
@@ -362,7 +364,6 @@ export default function Landing() {
           </h2>
         </div>
 
-        {/* Varied card sizes instead of uniform 3-col */}
         <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr_1fr]">
           {[
             {

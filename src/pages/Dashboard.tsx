@@ -47,7 +47,12 @@ export default function Dashboard() {
       navigate("/auth?returnTo=/shop");
       return;
     }
-    await addToCart({ userId: (user as any)._id, productId: product._id, quantity });
+    try {
+      await addToCart({ userId: (user as any)._id, productId: product._id, quantity });
+      setCartOpen(true);
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+    }
   };
 
   const filteredProducts = (products ?? []).filter((p) => {
