@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,14 +20,14 @@ interface Product {
 export function ProductCard({
   product,
   onAddToCart,
-  onViewDetail,
   index = 0,
 }: {
   product: Product;
   onAddToCart?: (product: Product) => void;
-  onViewDetail?: (product: Product) => void;
   index?: number;
 }) {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -38,7 +39,7 @@ export function ProductCard({
       {/* Image */}
       <div
         className="relative mb-4 aspect-square cursor-pointer overflow-hidden rounded-[20px] bg-secondary"
-        onClick={() => onViewDetail?.(product)}
+        onClick={() => navigate(`/product/${product._id}`)}
       >
         <img
           src={product.imageUrl}
@@ -60,7 +61,7 @@ export function ProductCard({
         </p>
         <h3
           className="text-sm font-medium leading-snug text-foreground cursor-pointer transition-colors hover:text-[#fb6900]"
-          onClick={() => onViewDetail?.(product)}
+          onClick={() => navigate(`/product/${product._id}`)}
         >
           {product.name}
         </h3>
@@ -93,7 +94,10 @@ export function ProductCard({
             size="icon"
             variant="outline"
             className="size-8 rounded-full border-border/50"
-            onClick={() => onAddToCart?.(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart?.(product);
+            }}
           >
             <ShoppingBag className="size-3.5" />
           </Button>

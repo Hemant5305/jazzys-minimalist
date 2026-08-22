@@ -39,14 +39,16 @@ const schema = defineSchema(
       reviewCount: v.number(),
       inStock: v.boolean(),
       isBestSeller: v.boolean(),
-    }).index("by_category", ["category"])
+    })
+      .index("by_category", ["category"])
       .index("by_best_seller", ["isBestSeller"]),
 
     cartItems: defineTable({
       userId: v.string(),
       productId: v.id("products"),
       quantity: v.number(),
-    }).index("by_user", ["userId"])
+    })
+      .index("by_user", ["userId"])
       .index("by_user_product", ["userId", "productId"]),
 
     bookings: defineTable({
@@ -63,7 +65,44 @@ const schema = defineSchema(
         v.literal("confirmed"),
         v.literal("cancelled"),
       ),
-    }).index("by_user", ["userId"])
+    })
+      .index("by_user", ["userId"])
+      .index("by_status", ["status"]),
+
+    reviews: defineTable({
+      userId: v.string(),
+      userName: v.string(),
+      productId: v.id("products"),
+      rating: v.number(),
+      comment: v.string(),
+      createdAt: v.number(),
+    })
+      .index("by_product", ["productId"])
+      .index("by_user", ["userId"]),
+
+    orders: defineTable({
+      userId: v.string(),
+      items: v.array(
+        v.object({
+          productId: v.id("products"),
+          name: v.string(),
+          price: v.number(),
+          quantity: v.number(),
+          imageUrl: v.string(),
+        }),
+      ),
+      total: v.number(),
+      status: v.union(
+        v.literal("pending"),
+        v.literal("processing"),
+        v.literal("shipped"),
+        v.literal("delivered"),
+        v.literal("cancelled"),
+      ),
+      shippingAddress: v.optional(v.string()),
+      createdAt: v.number(),
+    })
+      .index("by_user", ["userId"])
       .index("by_status", ["status"]),
   },
   {

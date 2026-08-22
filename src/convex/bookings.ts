@@ -31,9 +31,30 @@ export const getUserBookings = query({
   },
 });
 
+export const getAll = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("bookings").order("desc").collect();
+  },
+});
+
 export const getBooking = query({
   args: { id: v.id("bookings") },
   handler: async (ctx, args) => {
     return await ctx.db.get(args.id);
+  },
+});
+
+export const updateStatus = mutation({
+  args: {
+    bookingId: v.id("bookings"),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("confirmed"),
+      v.literal("cancelled"),
+    ),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.bookingId, { status: args.status });
   },
 });

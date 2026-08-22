@@ -9,13 +9,14 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 
-// Lazy load route components for better code splitting
 const Landing = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
-const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
+const Shop = lazy(() => import("./pages/Dashboard.tsx"));
+const ProductPage = lazy(() => import("./pages/ProductPage.tsx"));
+const Account = lazy(() => import("./pages/Account.tsx"));
+const Admin = lazy(() => import("./pages/Admin.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
-// Simple loading fallback for route transitions
 function RouteLoading() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
@@ -27,8 +28,6 @@ function RouteLoading() {
   );
 }
 
-/** Silent error boundary — if VlyToolbar crashes it renders nothing instead of
- *  crashing the whole app (e.g. hook errors in WebContainer environment). */
 class ToolbarErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean }
@@ -45,7 +44,6 @@ class ToolbarErrorBoundary extends React.Component<
   }
 }
 
-/** Hard guard so runtime errors never leave the preview as a blank page. */
 class RootErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; message: string; stack: string }
@@ -119,15 +117,37 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<Landing />} />
               <Route
                 path="/auth"
+                element={<AuthPage redirectAfterAuth="/shop" />}
+              />
+              <Route
+                path="/shop"
                 element={
-                  <AuthPage redirectAfterAuth="/dashboard" />
+                  <RequireAuth>
+                    <Shop />
+                  </RequireAuth>
                 }
               />
               <Route
-                path="/dashboard"
+                path="/product/:id"
                 element={
                   <RequireAuth>
-                    <Dashboard />
+                    <ProductPage />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/account"
+                element={
+                  <RequireAuth>
+                    <Account />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <RequireAuth>
+                    <Admin />
                   </RequireAuth>
                 }
               />

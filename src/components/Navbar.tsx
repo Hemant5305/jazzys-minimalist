@@ -12,11 +12,16 @@ export function Navbar({
   cartCount?: number;
   onCartClick?: () => void;
 }) {
-  const { isAuthenticated, signOut } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const isAdmin = (user as any)?.role === "admin";
+
   const handleSignOut = async () => {
+    // Import dynamically to avoid circular deps
+    const { useAuthActions } = await import("@convex-dev/auth/react");
+    const { signOut } = useAuthActions();
     await signOut();
     navigate("/");
   };
@@ -24,7 +29,6 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between px-6">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="text-xl font-semibold tracking-tight text-foreground">
             Jazzy's
@@ -34,7 +38,6 @@ export function Navbar({
           </span>
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 md:flex">
           <Link
             to="/"
@@ -43,16 +46,17 @@ export function Navbar({
             Home
           </Link>
           <Link
-            to="/dashboard"
+            to="/shop"
             className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
           >
             Shop
           </Link>
           <button
             onClick={() => {
-              const el = document.getElementById("salon-booking");
-              if (el) {
-                el.scrollIntoView({ behavior: "smooth" });
+              if (window.location.pathname === "/") {
+                document
+                  .getElementById("salon-booking")
+                  ?.scrollIntoView({ behavior: "smooth" });
               } else {
                 navigate("/#salon-booking");
               }
@@ -61,9 +65,16 @@ export function Navbar({
           >
             Book Appointment
           </button>
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+            >
+              Admin
+            </Link>
+          )}
         </nav>
 
-        {/* Right side */}
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
             <>
@@ -84,14 +95,14 @@ export function Navbar({
                 variant="ghost"
                 size="icon"
                 className="hidden md:inline-flex"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/account")}
               >
                 <User className="size-5" />
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden md:inline-flex rounded-full border-border/50 text-xs"
+                className="hidden rounded-full border-border/50 text-xs md:inline-flex"
                 onClick={handleSignOut}
               >
                 Sign Out
@@ -99,7 +110,6 @@ export function Navbar({
             </>
           ) : (
             <Button
-              variant="default"
               size="sm"
               className="hidden rounded-full bg-[#fb6900] text-white hover:bg-[#e55d00] md:inline-flex"
               onClick={() => navigate("/auth")}
@@ -108,7 +118,6 @@ export function Navbar({
             </Button>
           )}
 
-          {/* Mobile menu button */}
           <button
             className="inline-flex items-center justify-center md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -118,7 +127,6 @@ export function Navbar({
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -131,28 +139,38 @@ export function Navbar({
             <div className="flex flex-col gap-1 px-6 py-4">
               <Link
                 to="/"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-muted"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted"
                 onClick={() => setMobileOpen(false)}
               >
                 Home
               </Link>
               <Link
-                to="/dashboard"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-muted"
+                to="/shop"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted"
                 onClick={() => setMobileOpen(false)}
               >
                 Shop
               </Link>
               <button
-                className="rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground/70 transition-colors hover:bg-muted"
+                className="rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground/70 hover:bg-muted"
                 onClick={() => {
                   setMobileOpen(false);
-                  const el = document.getElementById("salon-booking");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                  document
+                    .getElementById("salon-booking")
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
                 Book Appointment
               </button>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Admin Panel
+                </Link>
+              )}
               <div className="my-2 border-t border-border" />
               {isAuthenticated ? (
                 <>
@@ -171,6 +189,17 @@ export function Navbar({
                         {cartCount}
                       </span>
                     )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="justify-start gap-2"
+                    onClick={() => {
+                      setMobileOpen(false);
+                      navigate("/account");
+                    }}
+                  >
+                    <User className="size-4" />
+                    My Account
                   </Button>
                   <Button
                     variant="ghost"

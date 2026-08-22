@@ -2,61 +2,54 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router";
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
 import { CartDrawer } from "@/components/CartDrawer";
-import { ProductDetail } from "@/components/ProductDetail";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Search, X } from "lucide-react";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [cartOpen, setCartOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  // Convex data
   const products = useQuery(api.products.list);
   const categories = useQuery(api.products.getCategories);
   const cartItems = useQuery(
     api.cart.getCart,
-    user ? { userId: user._id } : "skip"
+    user ? { userId: (user as any)._id } : "skip",
   );
   const cartCount = useQuery(
     api.cart.getCartCount,
-    user ? { userId: user._id } : "skip"
+    user ? { userId: (user as any)._id } : "skip",
   );
   const addToCart = useMutation(api.cart.addToCart);
   const updateQuantity = useMutation(api.cart.updateQuantity);
   const removeFromCart = useMutation(api.cart.removeFromCart);
 
-  // Seed on first load
   const seedMutation = useMutation(api.seed.seedProducts);
   const [seeded, setSeeded] = useState(false);
   useEffect(() => {
     if (!seeded) {
-      seedMutation().then(() => setSeeded(true)).catch(() => setSeeded(true));
+      seedMutation()
+        .then(() => setSeeded(true))
+        .catch(() => setSeeded(true));
     }
   }, [seeded, seedMutation]);
 
   const handleAddToCart = async (product: any) => {
-    if (!user) return;
-    await addToCart({ userId: user._id, productId: product._id as any });
+    if (!user) {
+      navigate("/auth?returnTo=/shop");
+      return;
+    }
+    await addToCart({ userId: (user as any)._id, productId: product._id });
   };
 
-  const handleAddFromDetail = async (productId: string, quantity: number) => {
-    if (!user) return;
-    await addToCart({
-      userId: user._id,
-      productId: productId as any,
-      quantity,
-    });
-  };
-
-  // Filter products
   const filteredProducts = (products ?? []).filter((p) => {
     const matchesSearch =
       searchQuery === "" ||
@@ -77,7 +70,6 @@ export default function Dashboard() {
       />
 
       <main className="mx-auto max-w-[1360px] px-6 py-12 md:py-16">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -90,19 +82,17 @@ export default function Dashboard() {
             Shop All Products
           </h1>
           <p className="mt-2 max-w-md text-sm text-[#666]">
-            Browse our curated selection of premium beauty products, handpicked
-            for quality and effectiveness.
+            Browse our curated selection of premium beauty products, chosen for
+            their quality and effectiveness.
           </p>
         </motion.div>
 
-        {/* Filters & Search */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
-          {/* Search */}
           <div className="relative max-w-sm flex-1">
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#666]" />
             <Input
@@ -121,7 +111,6 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Categories */}
           <div className="flex flex-wrap gap-2">
             {allCategories.map((cat) => (
               <button
@@ -139,15 +128,13 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {/* Results count */}
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-6">
           <p className="text-xs text-[#666]">
             {filteredProducts.length} product
             {filteredProducts.length !== 1 ? "s" : ""}
           </p>
         </div>
 
-        {/* Product Grid */}
         <div className="mt-4 grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
           {products === undefined
             ? Array.from({ length: 8 }).map((_, i) => (
@@ -164,7 +151,6 @@ export default function Dashboard() {
                   product={product as any}
                   index={i}
                   onAddToCart={handleAddToCart}
-                  onViewDetail={setSelectedProduct}
                 />
               ))}
         </div>
@@ -175,7 +161,7 @@ export default function Dashboard() {
               No products found
             </p>
             <p className="mt-1 text-sm text-[#666]">
-              Try adjusting your search or filters
+              Try adjusting your search or filters.
             </p>
             <Button
               variant="outline"
@@ -191,11 +177,10 @@ export default function Dashboard() {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-border bg-secondary/30">
         <div className="mx-auto flex max-w-[1360px] items-center justify-between px-6 py-6">
           <p className="text-xs text-[#666]">
-            © 2026 Jazzy's Salon & Beauty
+            &copy; 2026 Jazzy's Salon & Beauty
           </p>
           <div className="flex gap-4">
             {["Privacy", "Terms", "Contact"].map((link) => (
@@ -211,7 +196,6 @@ export default function Dashboard() {
         </div>
       </footer>
 
-      {/* Modals */}
       <CartDrawer
         open={cartOpen}
         onClose={() => setCartOpen(false)}
@@ -220,13 +204,6 @@ export default function Dashboard() {
           updateQuantity({ cartItemId: id as any, quantity: qty })
         }
         onRemove={(id) => removeFromCart({ cartItemId: id as any })}
-      />
-
-      <ProductDetail
-        product={selectedProduct}
-        open={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onAddToCart={handleAddFromDetail}
       />
     </div>
   );
