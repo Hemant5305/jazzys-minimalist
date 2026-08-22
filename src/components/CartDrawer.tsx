@@ -7,6 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 interface CartItem {
   _id: string;
@@ -54,7 +55,7 @@ export function CartDrawer({
               <p className="text-sm text-[#666]">Your bag is empty</p>
               <Button
                 variant="link"
-                className="mt-2 text-[#fb6900]"
+                className="mt-2 text-[#c96b8b]"
                 onClick={onClose}
               >
                 Continue Shopping
@@ -113,7 +114,7 @@ export function CartDrawer({
                           </div>
                           <div className="flex items-center gap-3">
                             <span className="text-sm font-medium">
-                              ${(item.product.price * item.quantity).toFixed(2)}
+                              {formatPrice(item.product.price * item.quantity)}
                             </span>
                             <button
                               className="text-[#666] transition-colors hover:text-destructive"
@@ -134,14 +135,14 @@ export function CartDrawer({
               <div className="mb-4 flex items-center justify-between">
                 <span className="text-sm text-[#666]">Subtotal</span>
                 <span className="text-lg font-semibold">
-                  ${total.toFixed(2)}
+                  {formatPrice(total)}
                 </span>
               </div>
               <p className="mb-4 text-[11px] text-[#666]">
                 Shipping & taxes calculated at checkout
               </p>
-              <Button className="w-full rounded-[6px] bg-[#fb6900] text-white hover:bg-[#e55d00]">
-                Checkout — ${total.toFixed(2)}
+              <Button className="w-full rounded-[6px] bg-[#c96b8b] text-white hover:bg-[#b85d7c]">
+                Checkout — {formatPrice(total)}
               </Button>
             </div>
           </>

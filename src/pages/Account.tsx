@@ -2,6 +2,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/Navbar";
+import { formatPrice } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   Package,
@@ -56,17 +57,17 @@ export default function Account() {
     <div className="min-h-screen bg-white">
       <Navbar cartCount={0} />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-12 md:py-16">
+      <main className="mx-auto max-w-[1360px] px-6 py-10 md:py-14">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#fb6900]">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
             My Account
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             Welcome{(user as any)?.name ? `, ${(user as any).name}` : ""}
           </h1>
           <p className="mt-2 text-sm text-[#666]">
@@ -79,7 +80,7 @@ export default function Account() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3"
+          className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3"
         >
           {[
             {
@@ -89,7 +90,7 @@ export default function Account() {
             },
             {
               label: "Total Spent",
-              value: `$${(stats?.totalSpent ?? 0).toFixed(2)}`,
+              value: formatPrice(stats?.totalSpent ?? 0),
               icon: CreditCard,
             },
             {
@@ -100,10 +101,10 @@ export default function Account() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="flex items-center gap-4 rounded-[12px] border border-border/50 bg-secondary/30 p-5"
+              className="flex items-center gap-4 rounded-[12px] border border-[#c96b8b]/10 bg-[#fce4ec]/20 p-5"
             >
               <div className="flex size-10 items-center justify-center rounded-full bg-white">
-                <stat.icon className="size-4.5 text-[#fb6900]" />
+                <stat.icon className="size-4.5 text-[#c96b8b]" />
               </div>
               <div>
                 <p className="text-[11px] font-medium text-[#666]">
@@ -115,14 +116,14 @@ export default function Account() {
           ))}
         </motion.div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-2">
+        <div className="mt-8 grid gap-8 lg:grid-cols-2">
           {/* Orders */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            <h2 className="text-lg font-semibold">Order History</h2>
+            <h2 className="font-display text-lg font-semibold">Order History</h2>
             {orders === undefined ? (
               <div className="mt-4 py-8 text-center text-sm text-[#666]">
                 Loading...
@@ -146,7 +147,7 @@ export default function Account() {
                       <div>
                         <p className="text-xs text-[#666]">
                           {new Date(order.createdAt).toLocaleDateString(
-                            "en-US",
+                            "en-IN",
                             {
                               month: "short",
                               day: "numeric",
@@ -161,7 +162,7 @@ export default function Account() {
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-semibold">
-                          ${order.total.toFixed(2)}
+                          {formatPrice(order.total)}
                         </p>
                         <StatusBadge status={order.status} />
                       </div>
@@ -189,7 +190,7 @@ export default function Account() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
           >
-            <h2 className="text-lg font-semibold">Salon Appointments</h2>
+            <h2 className="font-display text-lg font-semibold">Salon Appointments</h2>
             {bookings === undefined ? (
               <div className="mt-4 py-8 text-center text-sm text-[#666]">
                 Loading...
@@ -215,7 +216,7 @@ export default function Account() {
                           {booking.service}
                         </p>
                         <p className="mt-0.5 text-xs text-[#666]">
-                          {new Date(booking.date).toLocaleDateString("en-US", {
+                          {new Date(booking.date).toLocaleDateString("en-IN", {
                             weekday: "short",
                             month: "short",
                             day: "numeric",

@@ -14,14 +14,14 @@ import { useNavigate } from "react-router";
 import { Check, Loader2 } from "lucide-react";
 
 const SERVICES = [
-  { name: "Haircut & Styling", duration: "45 min", price: "$45" },
-  { name: "Hair Color & Highlights", duration: "90 min", price: "$120" },
-  { name: "Blow Dry & Treatment", duration: "30 min", price: "$35" },
-  { name: "Manicure & Pedicure", duration: "60 min", price: "$55" },
-  { name: "Facial Treatment", duration: "50 min", price: "$65" },
-  { name: "Full Body Massage", duration: "60 min", price: "$80" },
-  { name: "Bridal Package", duration: "3 hours", price: "$250" },
-  { name: "Express Makeup", duration: "25 min", price: "$40" },
+  { name: "Haircut & Styling", duration: "45 min", price: "₹3,499" },
+  { name: "Hair Color & Highlights", duration: "90 min", price: "₹9,499" },
+  { name: "Blow Dry & Treatment", duration: "30 min", price: "₹2,799" },
+  { name: "Manicure & Pedicure", duration: "60 min", price: "₹4,499" },
+  { name: "Facial Treatment", duration: "50 min", price: "₹4,999" },
+  { name: "Full Body Massage", duration: "60 min", price: "₹6,499" },
+  { name: "Bridal Package", duration: "3 hours", price: "₹19,999" },
+  { name: "Express Makeup", duration: "25 min", price: "₹3,199" },
 ];
 
 export function SalonBookingModal({
@@ -90,7 +90,7 @@ export function SalonBookingModal({
               via email shortly.
             </p>
             <Button
-              className="mt-2 rounded-[6px] bg-[#fb6900] text-white hover:bg-[#e55d00]"
+              className="mt-2 rounded-[6px] bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
               onClick={handleClose}
             >
               Done
@@ -114,7 +114,7 @@ export function SalonBookingModal({
                       key={service.name}
                       className={`flex items-center justify-between rounded-[6px] border px-4 py-3 text-left transition-all ${
                         selectedService === service.name
-                          ? "border-[#fb6900] bg-[#fb6900]/5"
+                          ? "border-[#c96b8b] bg-[#c96b8b]/5"
                           : "border-border hover:border-border/80 hover:bg-muted/50"
                       }`}
                       onClick={() => setSelectedService(service.name)}
@@ -125,14 +125,14 @@ export function SalonBookingModal({
                           {service.duration}
                         </p>
                       </div>
-                      <span className="text-sm font-medium text-[#fb6900]">
+                      <span className="text-sm font-medium text-[#c96b8b]">
                         {service.price}
                       </span>
                     </button>
                   ))}
                 </div>
                 <Button
-                  className="mt-4 w-full rounded-[6px] bg-[#fb6900] text-white hover:bg-[#e55d00]"
+                  className="mt-4 w-full rounded-[6px] bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
                   disabled={!selectedService}
                   onClick={() => setStep("form")}
                 >
@@ -146,7 +146,7 @@ export function SalonBookingModal({
                     {selectedService}
                   </span>
                   <button
-                    className="ml-auto text-[11px] text-[#fb6900] hover:underline"
+                    className="ml-auto text-[11px] text-[#c96b8b] hover:underline"
                     onClick={() => setStep("select")}
                   >
                     Change
@@ -188,7 +188,7 @@ export function SalonBookingModal({
                     </label>
                     <Input
                       type="tel"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="+91 98765 43210"
                       value={form.phone}
                       onChange={(e) =>
                         setForm({ ...form, phone: e.target.value })
@@ -212,7 +212,7 @@ export function SalonBookingModal({
                 </div>
 
                 <Button
-                  className="mt-4 w-full rounded-[6px] bg-[#fb6900] text-white hover:bg-[#e55d00]"
+                  className="mt-4 w-full rounded-[6px] bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
                   disabled={!form.date || !form.time || !form.phone || isSubmitting}
                   onClick={handleSubmit}
                 >

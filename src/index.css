@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
@@ -49,34 +49,36 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.72 0.18 45);
+  --primary: oklch(0.62 0.16 350);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.97 0.005 340);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
+  --muted: oklch(0.97 0.005 340);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --accent: oklch(0.97 0.005 340);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.72 0.18 45);
-  --chart-1: oklch(0.72 0.18 45);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --ring: oklch(0.62 0.16 350);
+  --chart-1: oklch(0.62 0.16 350);
+  --chart-2: oklch(0.7 0.12 340);
+  --chart-3: oklch(0.55 0.14 355);
+  --chart-4: oklch(0.82 0.1 340);
+  --chart-5: oklch(0.75 0.12 345);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.72 0.18 45);
+  --sidebar-primary: oklch(0.62 0.16 350);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: oklch(0.97 0.005 340);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.72 0.18 45);
+  --sidebar-ring: oklch(0.62 0.16 350);
 
-  /* Jazzy's Salon custom tokens */
-  --color-accent-orange: #fb6900;
+  /* Jazzy's Salon — feminine beauty tokens */
+  --color-accent-rose: #c96b8b;
+  --color-accent-blush: #f0d0dd;
+  --color-accent-peach: #fce4e0;
   --color-border-light: #e5e5e5;
   --color-text-secondary: #666666;
 }
@@ -88,7 +90,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.72 0.18 45);
+  --primary: oklch(0.62 0.16 350);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -99,15 +101,15 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.18 45);
-  --chart-1: oklch(0.488 0.243 264.376);
+  --ring: oklch(0.62 0.16 350);
+  --chart-1: oklch(0.62 0.16 350);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.62 0.16 350);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -129,6 +131,11 @@
   }
 }
 
+/* Feminine font for headings */
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
 /* Minimalist scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -142,4 +149,55 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a3a3a3;
+}
+
+/* Splash screen animations */
+@keyframes splashFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes splashPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+@keyframes splashLine {
+  from { width: 0; }
+  to { width: 80px; }
+}
+@keyframes splashFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; pointer-events: none; }
+}
+.splash-fade-in {
+  animation: splashFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.splash-delay-1 {
+  animation: splashFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  opacity: 0;
+}
+.splash-delay-2 {
+  animation: splashFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+  opacity: 0;
+}
+.splash-line {
+  animation: splashLine 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+}
+.splash-exit {
+  animation: splashFadeOut 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Soft gradient backgrounds */
+.bg-beauty-gradient {
+  background: linear-gradient(135deg, #fff5f7 0%, #fef0f4 30%, #fdf6f3 70%, #fff8f5 100%);
+}
+.bg-beauty-gradient-strong {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8d0de 40%, #fde8e0 70%, #fff0ea 100%);
+}
+.bg-rose-subtle {
+  background: linear-gradient(135deg, rgba(201,107,139,0.04) 0%, rgba(240,208,221,0.06) 100%);
+}
+
+/* Smooth section transitions */
+section {
+  scroll-margin-top: 4rem;
 }

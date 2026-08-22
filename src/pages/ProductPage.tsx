@@ -8,6 +8,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { ReviewSection } from "@/components/ReviewSection";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -57,7 +58,6 @@ export default function ProductPage() {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
-  // Related products (same category, excluding current)
   const related = (allProducts ?? [])
     .filter((p) => p._id !== product?._id && p.category === product?.category)
     .slice(0, 4);
@@ -66,7 +66,7 @@ export default function ProductPage() {
     return (
       <div className="min-h-screen bg-white">
         <Navbar cartCount={0} />
-        <div className="mx-auto max-w-[1360px] px-6 py-20">
+        <div className="mx-auto max-w-[1360px] px-6 py-16">
           <div className="animate-pulse">
             <div className="h-4 w-32 rounded bg-secondary" />
             <div className="mt-6 grid gap-12 md:grid-cols-2">
@@ -112,7 +112,7 @@ export default function ProductPage() {
         onCartClick={() => setCartOpen(true)}
       />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-8 md:py-12">
+      <main className="mx-auto max-w-[1360px] px-6 py-6 md:py-10">
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -121,7 +121,7 @@ export default function ProductPage() {
         >
           <button
             onClick={() => navigate(-1)}
-            className="mb-6 inline-flex items-center gap-1.5 text-xs text-[#666] transition-colors hover:text-foreground"
+            className="mb-5 inline-flex items-center gap-1.5 text-xs text-[#666] transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3" />
             Back
@@ -164,7 +164,7 @@ export default function ProductPage() {
             <p className="text-[11px] font-medium uppercase tracking-wider text-[#666]">
               {product.category}
             </p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
               {product.name}
             </h1>
 
@@ -176,7 +176,7 @@ export default function ProductPage() {
                     key={i}
                     className={`size-3.5 ${
                       i < Math.round(product.rating)
-                        ? "fill-[#fb6900] text-[#fb6900]"
+                        ? "fill-[#c96b8b] text-[#c96b8b]"
                         : "fill-border text-border"
                     }`}
                   />
@@ -189,7 +189,7 @@ export default function ProductPage() {
 
             {/* Price */}
             <p className="mt-4 text-2xl font-semibold text-foreground">
-              ${product.price.toFixed(2)}
+              {formatPrice(product.price)}
             </p>
 
             {/* Description */}
@@ -236,28 +236,28 @@ export default function ProductPage() {
 
             {/* Add to bag */}
             <Button
-              className="mt-6 w-full rounded-[6px] bg-[#fb6900] py-6 text-white hover:bg-[#e55d00]"
+              className="mt-6 w-full rounded-[6px] bg-[#c96b8b] py-6 text-white hover:bg-[#b85d7c]"
               disabled={!product.inStock}
               onClick={handleAddToCart}
             >
               <ShoppingBag className="mr-2 size-4" />
               {addedToCart
                 ? "Added to Bag!"
-                : `Add to Bag — $${(product.price * quantity).toFixed(2)}`}
+                : `Add to Bag — ${formatPrice(product.price * quantity)}`}
             </Button>
 
             {/* Trust signals */}
             <div className="mt-6 grid grid-cols-3 gap-3">
               {[
-                { icon: Truck, label: "Free shipping over $50" },
+                { icon: Truck, label: "Free shipping over ₹999" },
                 { icon: Shield, label: "Secure payment" },
                 { icon: RotateCcw, label: "30-day returns" },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="flex flex-col items-center gap-1.5 rounded-[6px] border border-border/50 bg-secondary/30 px-2 py-3 text-center"
+                  className="flex flex-col items-center gap-1.5 rounded-[6px] border border-[#c96b8b]/10 bg-[#fce4ec]/20 px-2 py-3 text-center"
                 >
-                  <item.icon className="size-4 text-[#fb6900]" />
+                  <item.icon className="size-4 text-[#c96b8b]" />
                   <span className="text-[10px] leading-tight text-[#666]">
                     {item.label}
                   </span>
@@ -272,9 +272,9 @@ export default function ProductPage() {
 
         {/* Related products */}
         {related.length > 0 && (
-          <div className="mt-16 border-t border-border pt-12">
-            <h3 className="text-lg font-semibold">You May Also Like</h3>
-            <div className="mt-6 grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-4">
+          <div className="mt-14 border-t border-border pt-10">
+            <h3 className="font-display text-lg font-semibold">You May Also Like</h3>
+            <div className="mt-5 grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-4">
               {related.map((p, i) => (
                 <ProductCard
                   key={p._id}
@@ -290,7 +290,6 @@ export default function ProductPage() {
                       productId: p._id,
                     });
                   }}
-
                 />
               ))}
             </div>

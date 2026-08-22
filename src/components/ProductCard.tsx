@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/utils";
 
 interface Product {
   _id: string;
@@ -60,7 +61,7 @@ export function ProductCard({
           {product.category}
         </p>
         <h3
-          className="text-sm font-medium leading-snug text-foreground cursor-pointer transition-colors hover:text-[#fb6900]"
+          className="text-sm font-medium leading-snug text-foreground cursor-pointer transition-colors hover:text-[#c96b8b]"
           onClick={() => navigate(`/product/${product._id}`)}
         >
           {product.name}
@@ -74,7 +75,7 @@ export function ProductCard({
                 key={i}
                 className={`size-3 ${
                   i < Math.round(product.rating)
-                    ? "fill-[#fb6900] text-[#fb6900]"
+                    ? "fill-[#c96b8b] text-[#c96b8b]"
                     : "fill-border text-border"
                 }`}
               />
@@ -88,7 +89,7 @@ export function ProductCard({
         {/* Price + Add to cart */}
         <div className="mt-2 flex items-center justify-between">
           <span className="text-base font-semibold text-foreground">
-            ${product.price.toFixed(2)}
+            {formatPrice(product.price)}
           </span>
           <Button
             size="icon"

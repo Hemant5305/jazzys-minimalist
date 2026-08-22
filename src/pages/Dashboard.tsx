@@ -69,16 +69,16 @@ export default function Dashboard() {
         onCartClick={() => setCartOpen(true)}
       />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-12 md:py-16">
+      <main className="mx-auto max-w-[1360px] px-6 py-10 md:py-14">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#fb6900]">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
             Our Collection
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             Shop All Products
           </h1>
           <p className="mt-2 max-w-md text-sm text-[#666]">
@@ -91,7 +91,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+          className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
           <div className="relative max-w-sm flex-1">
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#666]" />
@@ -118,7 +118,7 @@ export default function Dashboard() {
                 onClick={() => setSelectedCategory(cat)}
                 className={`rounded-full border px-4 py-1.5 text-[11px] font-medium transition-all ${
                   selectedCategory === cat
-                    ? "border-[#fb6900] bg-[#fb6900] text-white"
+                    ? "border-[#c96b8b] bg-[#c96b8b] text-white"
                     : "border-border/50 bg-white text-[#666] hover:border-border hover:text-foreground"
                 }`}
               >
@@ -128,7 +128,7 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <p className="text-xs text-[#666]">
             {filteredProducts.length} product
             {filteredProducts.length !== 1 ? "s" : ""}
@@ -178,7 +178,7 @@ export default function Dashboard() {
       </main>
 
       <footer className="border-t border-border bg-secondary/30">
-        <div className="mx-auto flex max-w-[1360px] items-center justify-between px-6 py-6">
+        <div className="mx-auto flex max-w-[1360px] items-center justify-between px-6 py-5">
           <p className="text-xs text-[#666]">
             &copy; 2026 Jazzy's Salon & Beauty
           </p>
@@ -187,7 +187,7 @@ export default function Dashboard() {
               <a
                 key={link}
                 href="#"
-                className="text-xs text-[#666] transition-colors hover:text-[#fb6900]"
+                className="text-xs text-[#666] transition-colors hover:text-[#c96b8b]"
               >
                 {link}
               </a>

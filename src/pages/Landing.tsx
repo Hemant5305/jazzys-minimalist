@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { CartDrawer } from "@/components/CartDrawer";
 import { SalonBookingModal } from "@/components/SalonBookingModal";
 import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/utils";
 import {
   Calendar,
   Sparkles,
@@ -87,31 +88,31 @@ export default function Landing() {
       />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden bg-beauty-gradient">
         <div className="mx-auto max-w-[1360px] px-6">
-          <div className="grid min-h-[80vh] items-center gap-12 py-16 md:grid-cols-2 md:py-24">
+          <div className="grid min-h-[70vh] items-center gap-12 py-12 md:grid-cols-2 md:py-20">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col gap-6"
+              className="flex flex-col gap-5"
             >
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-border px-4 py-1.5"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#c96b8b]/20 bg-white/80 px-4 py-1.5"
               >
-                <Sparkles className="size-3.5 text-[#fb6900]" />
+                <Sparkles className="size-3.5 text-[#c96b8b]" />
                 <span className="text-[11px] font-medium tracking-wide text-[#666]">
                   Premium Beauty & Salon Services
                 </span>
               </motion.div>
 
-              <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[1.05] tracking-tight text-foreground">
+              <h1 className="font-display text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[1.05] tracking-tight text-foreground">
                 Your Beauty,
                 <br />
-                <span className="text-[#fb6900]">Our Passion</span>
+                <span className="text-[#c96b8b]">Our Passion</span>
               </h1>
 
               <p className="max-w-md text-base leading-relaxed text-[#666]">
@@ -121,7 +122,7 @@ export default function Landing() {
 
               <div className="flex flex-wrap items-center gap-3">
                 <Button
-                  className="rounded-[6px] bg-[#fb6900] px-8 text-white hover:bg-[#e55d00]"
+                  className="rounded-[6px] bg-[#c96b8b] px-8 text-white hover:bg-[#b85d7c]"
                   onClick={() => navigate("/shop")}
                 >
                   Shop Now
@@ -129,7 +130,7 @@ export default function Landing() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="rounded-[6px] border-border/40 px-8"
+                  className="rounded-[6px] border-[#c96b8b]/30 px-8 hover:border-[#c96b8b]/50"
                   onClick={() => setBookingOpen(true)}
                 >
                   <Calendar className="mr-1.5 size-4" />
@@ -141,14 +142,14 @@ export default function Landing() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
-                className="flex items-center gap-6 pt-4"
+                className="flex items-center gap-6 pt-2"
               >
                 <div className="flex items-center gap-1.5">
                   <div className="flex -space-x-1">
                     {["S", "M", "K", "J", "L"].map((l, i) => (
                       <div
                         key={i}
-                        className="flex size-6 items-center justify-center rounded-full bg-secondary text-[10px] font-medium ring-2 ring-white"
+                        className="flex size-6 items-center justify-center rounded-full bg-[#fce4ec] text-[10px] font-medium text-[#c96b8b] ring-2 ring-white"
                       >
                         {l}
                       </div>
@@ -162,7 +163,7 @@ export default function Landing() {
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
-                      className="size-3 fill-[#fb6900] text-[#fb6900]"
+                      className="size-3 fill-[#c96b8b] text-[#c96b8b]"
                     />
                   ))}
                   <span className="ml-0.5 text-xs text-[#666]">4.9</span>
@@ -193,8 +194,8 @@ export default function Landing() {
                   className="absolute bottom-6 left-6 right-6 rounded-[16px] bg-white/90 p-4 shadow-lg backdrop-blur"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-full bg-[#fb6900]/10">
-                      <Scissors className="size-5 text-[#fb6900]" />
+                    <div className="flex size-10 items-center justify-center rounded-full bg-[#c96b8b]/10">
+                      <Scissors className="size-5 text-[#c96b8b]" />
                     </div>
                     <div>
                       <p className="text-sm font-medium">Expert Stylists</p>
@@ -203,7 +204,7 @@ export default function Landing() {
                       </p>
                     </div>
                     <div className="ml-auto text-right">
-                      <p className="text-lg font-semibold text-[#fb6900]">
+                      <p className="text-lg font-semibold text-[#c96b8b]">
                         50%
                       </p>
                       <p className="text-[11px] text-[#666]">
@@ -219,13 +220,13 @@ export default function Landing() {
       </section>
 
       {/* ═══ FEATURES STRIP ═══ */}
-      <section className="border-y border-border bg-secondary/30">
-        <div className="mx-auto grid max-w-[1360px] grid-cols-2 gap-6 px-6 py-10 md:grid-cols-4 md:py-12">
+      <section className="border-y border-border bg-[#fce4ec]/20">
+        <div className="mx-auto grid max-w-[1360px] grid-cols-2 gap-6 px-6 py-8 md:grid-cols-4 md:py-10">
           {[
             {
               icon: Truck,
               title: "Complimentary Shipping",
-              desc: "On orders over $50",
+              desc: "On orders over ₹999",
             },
             {
               icon: Shield,
@@ -249,7 +250,7 @@ export default function Landing() {
               className="flex items-center gap-3"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white">
-                <feature.icon className="size-4.5 text-[#fb6900]" />
+                <feature.icon className="size-4.5 text-[#c96b8b]" />
               </div>
               <div>
                 <p className="text-sm font-medium">{feature.title}</p>
@@ -261,12 +262,12 @@ export default function Landing() {
       </section>
 
       {/* ═══ BEST SELLERS ═══ */}
-      <section className="mx-auto max-w-[1360px] px-6 py-20 md:py-28">
+      <section className="mx-auto max-w-[1360px] px-6 py-16 md:py-20">
         <motion.div {...fadeUp} className="text-center">
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#fb6900]">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
             Our Best Sellers
           </p>
-          <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             Customer Favorites
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-[#666]">
@@ -275,7 +276,7 @@ export default function Landing() {
           </p>
         </motion.div>
 
-        <div className="mt-12 grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-10 grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-3 lg:grid-cols-5">
           {bestSellers === undefined
             ? Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="animate-pulse">
@@ -295,10 +296,10 @@ export default function Landing() {
               ))}
         </div>
 
-        <motion.div {...fadeUp} className="mt-12 text-center">
+        <motion.div {...fadeUp} className="mt-10 text-center">
           <Button
             variant="outline"
-            className="rounded-[6px] border-border/40 px-8"
+            className="rounded-[6px] border-[#c96b8b]/30 px-8 hover:border-[#c96b8b]/50"
             onClick={() => navigate("/shop")}
           >
             View All Products
@@ -310,10 +311,10 @@ export default function Landing() {
       {/* ═══ SALON BOOKING ═══ */}
       <section
         id="salon-booking"
-        className="border-y border-border bg-secondary/30"
+        className="border-y border-border bg-beauty-gradient"
       >
-        <div className="mx-auto max-w-[1360px] px-6 py-20 md:py-28">
-          <div className="grid gap-12 md:grid-cols-2 md:items-center">
+        <div className="mx-auto max-w-[1360px] px-6 py-16 md:py-20">
+          <div className="grid gap-10 md:grid-cols-2 md:items-center">
             <motion.div
               initial={{ opacity: 0, x: -32 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -361,13 +362,13 @@ export default function Landing() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col gap-6"
+              className="flex flex-col gap-5"
             >
               <div>
-                <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#fb6900]">
+                <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
                   Salon Services
                 </p>
-                <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
                   Book Your
                   <br />
                   Perfect Look
@@ -388,16 +389,16 @@ export default function Landing() {
                 ].map((s) => (
                   <div
                     key={s.label}
-                    className="flex items-center gap-2.5 rounded-[6px] border border-border/50 bg-white px-3 py-2.5"
+                    className="flex items-center gap-2.5 rounded-[6px] border border-[#c96b8b]/15 bg-white/80 px-3 py-2.5"
                   >
-                    <s.icon className="size-4 text-[#fb6900]" />
+                    <s.icon className="size-4 text-[#c96b8b]" />
                     <span className="text-[13px] font-medium">{s.label}</span>
                   </div>
                 ))}
               </div>
 
               <Button
-                className="w-fit rounded-[6px] bg-[#fb6900] px-8 text-white hover:bg-[#e55d00]"
+                className="w-fit rounded-[6px] bg-[#c96b8b] px-8 text-white hover:bg-[#b85d7c]"
                 onClick={() => setBookingOpen(true)}
               >
                 <Calendar className="mr-1.5 size-4" />
@@ -414,12 +415,12 @@ export default function Landing() {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section className="mx-auto max-w-[1360px] px-6 py-20 md:py-28">
+      <section className="mx-auto max-w-[1360px] px-6 py-16 md:py-20">
         <motion.div {...fadeUp} className="text-center">
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#fb6900]">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
             Testimonials
           </p>
-          <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             What Our Clients Say
           </h2>
         </motion.div>
@@ -428,7 +429,7 @@ export default function Landing() {
           initial={{}}
           whileInView={{ transition: { staggerChildren: 0.08 } }}
           viewport={{ once: true, margin: "-40px" }}
-          className="mt-12 grid gap-6 md:grid-cols-3"
+          className="mt-10 grid gap-6 md:grid-cols-3"
         >
           {[
             {
@@ -453,13 +454,13 @@ export default function Landing() {
             <motion.div
               key={testimonial.name}
               {...staggerItem}
-              className="rounded-[20px] border border-border/50 bg-white p-6 transition-shadow hover:shadow-[rgba(28,29,33,0.06)_0px_6px_6px_0px]"
+              className="rounded-[20px] border border-[#c96b8b]/10 bg-white p-6 transition-shadow hover:shadow-[rgba(201,107,139,0.06)_0px_6px_6px_0px]"
             >
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <Star
                     key={i}
-                    className="size-3 fill-[#fb6900] text-[#fb6900]"
+                    className="size-3 fill-[#c96b8b] text-[#c96b8b]"
                   />
                 ))}
               </div>
@@ -467,7 +468,7 @@ export default function Landing() {
                 &ldquo;{testimonial.text}&rdquo;
               </p>
               <div className="mt-4 flex items-center gap-3 border-t border-border/50 pt-4">
-                <div className="flex size-8 items-center justify-center rounded-full bg-secondary text-[11px] font-medium">
+                <div className="flex size-8 items-center justify-center rounded-full bg-[#fce4ec] text-[11px] font-medium text-[#c96b8b]">
                   {testimonial.name[0]}
                 </div>
                 <div>
@@ -483,10 +484,10 @@ export default function Landing() {
       </section>
 
       {/* ═══ CTA BANNER ═══ */}
-      <section className="border-y border-border">
-        <div className="mx-auto max-w-[1360px] px-6 py-20 text-center md:py-24">
+      <section className="border-y border-border bg-beauty-gradient-strong">
+        <div className="mx-auto max-w-[1360px] px-6 py-16 text-center md:py-20">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+            <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
               Ready to Glow?
             </h2>
             <p className="mx-auto mt-3 max-w-md text-sm text-[#666]">
@@ -495,7 +496,7 @@ export default function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Button
-                className="rounded-[6px] bg-[#fb6900] px-8 text-white hover:bg-[#e55d00]"
+                className="rounded-[6px] bg-[#c96b8b] px-8 text-white hover:bg-[#b85d7c]"
                 onClick={() => navigate("/shop")}
               >
                 Shop Collection
@@ -503,7 +504,7 @@ export default function Landing() {
               </Button>
               <Button
                 variant="outline"
-                className="rounded-[6px] border-border/40 px-8"
+                className="rounded-[6px] border-[#c96b8b]/30 px-8 hover:border-[#c96b8b]/50"
                 onClick={() => setBookingOpen(true)}
               >
                 Book Now
@@ -515,29 +516,31 @@ export default function Landing() {
 
       {/* ═══ FOOTER ═══ */}
       <footer className="bg-[#1b1a1a] text-[#d9d8d7]">
-        <div className="mx-auto max-w-[1360px] px-6 py-16">
-          <div className="grid gap-12 md:grid-cols-4">
+        <div className="mx-auto max-w-[1360px] px-6 py-14">
+          <div className="grid gap-10 md:grid-cols-4">
             <div className="md:col-span-1">
-              <h3 className="text-xl font-semibold text-white">Jazzy's</h3>
-              <p className="mt-1 text-sm font-light text-[#fb6900]">
+              <h3 className="font-display text-xl font-semibold text-white">
+                Jazzy's
+              </h3>
+              <p className="mt-0.5 text-sm font-light text-[#c96b8b]">
                 Salon & Beauty
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-[#999]">
+              <p className="mt-3 text-sm leading-relaxed text-[#999]">
                 Premium beauty products and expert salon services, all under one
                 roof.
               </p>
             </div>
 
             <div>
-              <h4 className="mb-4 text-sm font-medium uppercase tracking-wider text-white">
+              <h4 className="mb-3 text-sm font-medium uppercase tracking-wider text-white">
                 Quick Links
               </h4>
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2">
                 {["Shop All", "Best Sellers", "New Arrivals"].map((link) => (
                   <li key={link}>
                     <a
                       href="/shop"
-                      className="text-sm text-[#999] transition-colors hover:text-[#fb6900]"
+                      className="text-sm text-[#999] transition-colors hover:text-[#c96b8b]"
                     >
                       {link}
                     </a>
@@ -547,10 +550,10 @@ export default function Landing() {
             </div>
 
             <div>
-              <h4 className="mb-4 text-sm font-medium uppercase tracking-wider text-white">
+              <h4 className="mb-3 text-sm font-medium uppercase tracking-wider text-white">
                 Salon
               </h4>
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2">
                 {[
                   "Hair Services",
                   "Nail Services",
@@ -559,7 +562,7 @@ export default function Landing() {
                 ].map((link) => (
                   <li key={link}>
                     <button
-                      className="text-sm text-[#999] transition-colors hover:text-[#fb6900]"
+                      className="text-sm text-[#999] transition-colors hover:text-[#c96b8b]"
                       onClick={() => setBookingOpen(true)}
                     >
                       {link}
@@ -570,19 +573,19 @@ export default function Landing() {
             </div>
 
             <div>
-              <h4 className="mb-4 text-sm font-medium uppercase tracking-wider text-white">
+              <h4 className="mb-3 text-sm font-medium uppercase tracking-wider text-white">
                 Contact
               </h4>
-              <ul className="flex flex-col gap-2.5 text-sm text-[#999]">
+              <ul className="flex flex-col gap-2 text-sm text-[#999]">
                 <li>123 Beauty Avenue, Suite 100</li>
-                <li>New York, NY 10001</li>
-                <li className="text-[#fb6900]">+1 (555) 123-4567</li>
+                <li>Mumbai, MH 400001</li>
+                <li className="text-[#c96b8b]">+91 98765 43210</li>
                 <li>hello@jazzyssalon.com</li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 md:flex-row">
             <p className="text-xs text-[#666]">
               &copy; 2026 Jazzy's Salon & Beauty. All rights reserved.
             </p>
@@ -592,7 +595,7 @@ export default function Landing() {
                   <a
                     key={link}
                     href="#"
-                    className="text-xs text-[#666] transition-colors hover:text-[#fb6900]"
+                    className="text-xs text-[#666] transition-colors hover:text-[#c96b8b]"
                   >
                     {link}
                   </a>

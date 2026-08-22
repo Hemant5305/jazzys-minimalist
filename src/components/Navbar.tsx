@@ -19,7 +19,6 @@ export function Navbar({
   const isAdmin = (user as any)?.role === "admin";
 
   const handleSignOut = async () => {
-    // Import dynamically to avoid circular deps
     const { useAuthActions } = await import("@convex-dev/auth/react");
     const { signOut } = useAuthActions();
     await signOut();
@@ -29,11 +28,11 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-xl font-semibold tracking-tight text-foreground">
+        <Link to="/" className="flex items-baseline gap-1.5">
+          <span className="font-display text-xl font-semibold tracking-tight text-foreground">
             Jazzy's
           </span>
-          <span className="text-xl font-light text-[#fb6900]">
+          <span className="text-sm font-light text-[#c96b8b]">
             Salon & Beauty
           </span>
         </Link>
@@ -86,7 +85,7 @@ export function Navbar({
               >
                 <ShoppingBag className="size-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-[#fb6900] text-[10px] font-bold text-white">
+                  <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-[#c96b8b] text-[10px] font-bold text-white">
                     {cartCount}
                   </span>
                 )}
@@ -111,7 +110,7 @@ export function Navbar({
           ) : (
             <Button
               size="sm"
-              className="hidden rounded-full bg-[#fb6900] text-white hover:bg-[#e55d00] md:inline-flex"
+              className="hidden rounded-full bg-[#c96b8b] text-white hover:bg-[#b85d7c] md:inline-flex"
               onClick={() => navigate("/auth")}
             >
               Sign In
@@ -185,7 +184,7 @@ export function Navbar({
                     <ShoppingBag className="size-4" />
                     Cart
                     {cartCount > 0 && (
-                      <span className="ml-auto flex size-5 items-center justify-center rounded-full bg-[#fb6900] text-[10px] font-bold text-white">
+                      <span className="ml-auto flex size-5 items-center justify-center rounded-full bg-[#c96b8b] text-[10px] font-bold text-white">
                         {cartCount}
                       </span>
                     )}
@@ -214,7 +213,7 @@ export function Navbar({
                 </>
               ) : (
                 <Button
-                  className="w-full rounded-full bg-[#fb6900] text-white hover:bg-[#e55d00]"
+                  className="w-full rounded-full bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
                   onClick={() => {
                     setMobileOpen(false);
                     navigate("/auth");

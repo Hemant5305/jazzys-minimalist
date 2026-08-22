@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { formatPrice } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Package,
@@ -84,15 +85,15 @@ export default function Admin() {
     <div className="min-h-screen bg-white">
       <Navbar cartCount={0} />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-12 md:py-16">
+      <main className="mx-auto max-w-[1360px] px-6 py-10 md:py-14">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#fb6900]">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
             Administration
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             Dashboard
           </h1>
           <p className="mt-2 text-sm text-[#666]">
@@ -101,14 +102,14 @@ export default function Admin() {
         </motion.div>
 
         {/* Tabs */}
-        <div className="mt-8 flex gap-1 overflow-x-auto border-b border-border">
+        <div className="mt-6 flex gap-1 overflow-x-auto border-b border-border">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors ${
                 tab === t.id
-                  ? "border-[#fb6900] text-foreground"
+                  ? "border-[#c96b8b] text-foreground"
                   : "border-transparent text-[#666] hover:text-foreground"
               }`}
             >
@@ -119,7 +120,7 @@ export default function Admin() {
         </div>
 
         {/* Content */}
-        <div className="mt-8">
+        <div className="mt-6">
           {tab === "overview" && (
             <OverviewTab
               products={products}
@@ -193,11 +194,11 @@ function OverviewTab({
       {stats.map((s) => (
         <div
           key={s.label}
-          className="rounded-[12px] border border-border/50 bg-secondary/30 p-5"
+          className="rounded-[12px] border border-[#c96b8b]/10 bg-[#fce4ec]/20 p-5"
         >
           <div className="flex items-center gap-3">
             <div className="flex size-9 items-center justify-center rounded-full bg-white">
-              <s.icon className="size-4 text-[#fb6900]" />
+              <s.icon className="size-4 text-[#c96b8b]" />
             </div>
             <div>
               <p className="text-[11px] text-[#666]">{s.label}</p>
@@ -239,7 +240,7 @@ function ProductsTab({
         </p>
         <Button
           size="sm"
-          className="rounded-[6px] bg-[#fb6900] text-white hover:bg-[#e55d00]"
+          className="rounded-[6px] bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
           onClick={onAdd}
         >
           <Plus className="mr-1 size-3.5" />
@@ -282,7 +283,7 @@ function ProductsTab({
               : products.map((product) => (
                   <tr
                     key={product._id}
-                    className="border-b border-border/50 transition-colors hover:bg-secondary/30"
+                    className="border-b border-border/50 transition-colors hover:bg-[#fce4ec]/10"
                   >
                     <td className="flex items-center gap-3 py-3 pr-4">
                       <img
@@ -296,7 +297,7 @@ function ProductsTab({
                       {product.category}
                     </td>
                     <td className="py-3 pr-4 font-medium">
-                      ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </td>
                     <td className="py-3 pr-4 text-[#666]">
                       {product.rating} ({product.reviewCount})
@@ -354,7 +355,7 @@ function BookingsTab({
               className="flex flex-col gap-3 rounded-[12px] border border-border/50 p-4 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="flex items-center gap-3">
-                <div className="flex size-9 items-center justify-center rounded-full bg-secondary text-[11px] font-medium">
+                <div className="flex size-9 items-center justify-center rounded-full bg-[#fce4ec] text-[11px] font-medium text-[#c96b8b]">
                   {booking.userName?.[0]?.toUpperCase() ?? "G"}
                 </div>
                 <div>
@@ -363,7 +364,7 @@ function BookingsTab({
                     {booking.userName} · {booking.userEmail}
                   </p>
                   <p className="text-xs text-[#666]">
-                    {new Date(booking.date).toLocaleDateString("en-US", {
+                    {new Date(booking.date).toLocaleDateString("en-IN", {
                       weekday: "short",
                       month: "short",
                       day: "numeric",
@@ -463,7 +464,7 @@ function OrdersTab({
                     </span>
                   </div>
                   <p className="mt-0.5 text-xs text-[#666]">
-                    {new Date(order.createdAt).toLocaleDateString("en-US", {
+                    {new Date(order.createdAt).toLocaleDateString("en-IN", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
@@ -483,7 +484,7 @@ function OrdersTab({
                 </div>
                 <div className="flex items-center gap-3">
                   <p className="text-base font-semibold">
-                    ${order.total.toFixed(2)}
+                    {formatPrice(order.total)}
                   </p>
                   <select
                     value={order.status}
