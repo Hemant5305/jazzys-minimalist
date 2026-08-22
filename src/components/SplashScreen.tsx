@@ -1,77 +1,55 @@
 import { useState, useEffect } from "react";
 
 export function SplashScreen({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState<"name" | "reveal" | "done">("name");
+  const [phase, setPhase] = useState<"enter" | "flicker" | "exit">("enter");
 
   useEffect(() => {
-    // Phase 1: show name on black (0-1.4s)
-    // Phase 2: curtain lifts (1.4-2.4s)
-    // Phase 3: done (2.4s)
-    const revealTimer = setTimeout(() => setPhase("reveal"), 1400);
-    const doneTimer = setTimeout(() => {
-      setPhase("done");
-      onComplete();
-    }, 2600);
+    // Phase 1: name enters (0-0.8s)
+    // Phase 2: flicker on "Beauty" (0.8-2.2s)
+    // Phase 3: fade out and reveal site (2.2-3s)
+    const flickerTimer = setTimeout(() => setPhase("flicker"), 800);
+    const exitTimer = setTimeout(() => setPhase("exit"), 2200);
+    const doneTimer = setTimeout(() => onComplete(), 3000);
 
     return () => {
-      clearTimeout(revealTimer);
+      clearTimeout(flickerTimer);
+      clearTimeout(exitTimer);
       clearTimeout(doneTimer);
     };
   }, [onComplete]);
 
-  if (phase === "done") return null;
-
   return (
-    <div className="fixed inset-0 z-[9999]">
-      {/* The actual site content sits underneath — not rendered here, but the splash covers it */}
-
-      {/* Black curtain that lifts upward to reveal the site */}
+    <div
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white ${
+        phase === "exit" ? "splash-fade-out" : ""
+      }`}
+      style={{
+        background:
+          "linear-gradient(160deg, #fff5f7 0%, #fef6f0 50%, #fff8f5 100%)",
+      }}
+    >
       <div
-        className={`absolute inset-0 bg-black ${
-          phase === "reveal" ? "splash-curtain-lift" : ""
+        className={`flex flex-col items-center gap-4 ${
+          phase === "enter" ? "splash-name-enter" : ""
         }`}
-        style={{
-          transformOrigin: "top",
-        }}
       >
-        {/* Salon name centered on the black curtain */}
-        <div className="flex h-full flex-col items-center justify-center">
-          <div
-            className={`text-center ${
-              phase === "reveal" ? "splash-name-hold" : "splash-name-enter"
-            }`}
-          >
-            <h1 className="text-4xl font-light tracking-[0.15em] text-white md:text-6xl">
-              Jazzy's
-            </h1>
-            <div className="mt-3 flex items-center gap-3">
-              <span className="block h-[1px] w-8 bg-white/30" />
-              <p className="text-[11px] font-medium uppercase tracking-[0.35em] text-white/50">
-                Salon & Beauty
-              </p>
-              <span className="block h-[1px] w-8 bg-white/30" />
-            </div>
-          </div>
+        <h1 className="text-center">
+          <span className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-semibold tracking-tight text-foreground">
+            Jazzy's
+          </span>
+        </h1>
+
+        <div className="flex items-center gap-3">
+          <span className="block h-[1px] w-10 bg-[#c96b8b]/30" />
+          <p className="text-[13px] font-light uppercase tracking-[0.25em] text-[#888]">
+            Salon &amp;{" "}
+            <span className="splash-flicker font-medium text-[#c96b8b]">
+              Beauty
+            </span>
+          </p>
+          <span className="block h-[1px] w-10 bg-[#c96b8b]/30" />
         </div>
       </div>
-
-      {/* During reveal, the name stays pinned in the viewport above the curtain */}
-      {phase === "reveal" && (
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center">
-          <div className="splash-name-pin">
-            <h1 className="text-4xl font-light tracking-[0.15em] text-white md:text-6xl">
-              Jazzy's
-            </h1>
-            <div className="mt-3 flex items-center gap-3">
-              <span className="block h-[1px] w-8 bg-white/30" />
-              <p className="text-[11px] font-medium uppercase tracking-[0.35em] text-white/50">
-                Salon & Beauty
-              </p>
-              <span className="block h-[1px] w-8 bg-white/30" />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
