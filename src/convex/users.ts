@@ -1,23 +1,23 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
+import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
 
-    // Convex Auth stores users with _id = identity.subject
-    const user = await ctx.db.get(identity.subject as any);
+    const user = await ctx.db.get(userId);
     if (!user) return null;
 
     return {
       _id: user._id,
-      name: "name" in user ? (user as any).name : undefined,
-      email: "email" in user ? (user as any).email : undefined,
-      image: "image" in user ? (user as any).image : undefined,
-      role: "role" in user ? (user as any).role : undefined,
-      isAnonymous: "isAnonymous" in user ? (user as any).isAnonymous : undefined,
+      name: "name" in user ? (user as { name?: string }).name : undefined,
+      email: "email" in user ? (user as { email?: string }).email : undefined,
+      image: "image" in user ? (user as { image?: string }).image : undefined,
+      role: "role" in user ? (user as { role?: string }).role : undefined,
+      isAnonymous: "isAnonymous" in user ? (user as { isAnonymous?: boolean }).isAnonymous : undefined,
     };
   },
 });
