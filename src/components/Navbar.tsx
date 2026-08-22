@@ -26,27 +26,27 @@ export function Navbar({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between px-6">
-        <Link to="/" className="flex items-baseline gap-1.5">
-          <span className="font-display text-xl font-semibold tracking-tight text-foreground">
+    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+      <div className="mx-auto flex h-[52px] max-w-[1360px] items-center justify-between px-6">
+        <Link to="/" className="flex items-baseline gap-1">
+          <span className="font-display text-[17px] font-semibold tracking-tight text-foreground">
             Jazzy's
           </span>
-          <span className="text-sm font-light text-[#c96b8b]">
+          <span className="text-[12px] font-light text-[#c96b8b]">
             Salon & Beauty
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           <Link
             to="/"
-            className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+            className="text-[13px] text-[#666] transition-colors hover:text-foreground"
           >
             Home
           </Link>
           <Link
             to="/shop"
-            className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+            className="text-[13px] text-[#666] transition-colors hover:text-foreground"
           >
             Shop
           </Link>
@@ -60,32 +60,32 @@ export function Navbar({
                 navigate("/#salon-booking");
               }
             }}
-            className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+            className="text-[13px] text-[#666] transition-colors hover:text-foreground"
           >
             Book Appointment
           </button>
           {isAdmin && (
             <Link
               to="/admin"
-              className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+              className="text-[13px] text-[#666] transition-colors hover:text-foreground"
             >
               Admin
             </Link>
           )}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <>
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative hidden md:inline-flex"
+                className="relative hidden h-8 w-8 md:inline-flex"
                 onClick={onCartClick}
               >
-                <ShoppingBag className="size-5" />
+                <ShoppingBag className="size-[18px]" />
                 {cartCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-[#c96b8b] text-[10px] font-bold text-white">
+                  <span className="absolute -right-0.5 -top-0.5 flex size-[16px] items-center justify-center rounded-full bg-[#c96b8b] text-[9px] font-bold text-white">
                     {cartCount}
                   </span>
                 )}
@@ -93,15 +93,15 @@ export function Navbar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="hidden md:inline-flex"
+                className="hidden h-8 w-8 md:inline-flex"
                 onClick={() => navigate("/account")}
               >
-                <User className="size-5" />
+                <User className="size-[18px]" />
               </Button>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                className="hidden rounded-full border-border/50 text-xs md:inline-flex"
+                className="hidden h-7 rounded-full px-3 text-[11px] text-[#666] hover:text-foreground md:inline-flex"
                 onClick={handleSignOut}
               >
                 Sign Out
@@ -110,7 +110,7 @@ export function Navbar({
           ) : (
             <Button
               size="sm"
-              className="hidden rounded-full bg-[#c96b8b] text-white hover:bg-[#b85d7c] md:inline-flex"
+              className="hidden h-7 rounded-full bg-[#c96b8b] px-4 text-[11px] text-white hover:bg-[#b85d7c] md:inline-flex"
               onClick={() => navigate("/auth")}
             >
               Sign In
@@ -135,23 +135,23 @@ export function Navbar({
             transition={{ duration: 0.2 }}
             className="overflow-hidden border-t border-border md:hidden"
           >
-            <div className="flex flex-col gap-1 px-6 py-4">
+            <div className="flex flex-col gap-0.5 px-5 py-3">
               <Link
                 to="/"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted"
+                className="rounded-lg px-3 py-2 text-[13px] text-[#666] hover:bg-muted"
                 onClick={() => setMobileOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/shop"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted"
+                className="rounded-lg px-3 py-2 text-[13px] text-[#666] hover:bg-muted"
                 onClick={() => setMobileOpen(false)}
               >
                 Shop
               </Link>
               <button
-                className="rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground/70 hover:bg-muted"
+                className="rounded-lg px-3 py-2 text-left text-[13px] text-[#666] hover:bg-muted"
                 onClick={() => {
                   setMobileOpen(false);
                   document
@@ -164,18 +164,18 @@ export function Navbar({
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted"
+                  className="rounded-lg px-3 py-2 text-[13px] text-[#666] hover:bg-muted"
                   onClick={() => setMobileOpen(false)}
                 >
                   Admin Panel
                 </Link>
               )}
-              <div className="my-2 border-t border-border" />
+              <div className="my-1.5 border-t border-border/60" />
               {isAuthenticated ? (
                 <>
                   <Button
                     variant="ghost"
-                    className="justify-start gap-2"
+                    className="justify-start gap-2 text-[13px]"
                     onClick={() => {
                       setMobileOpen(false);
                       onCartClick?.();
@@ -191,7 +191,7 @@ export function Navbar({
                   </Button>
                   <Button
                     variant="ghost"
-                    className="justify-start gap-2"
+                    className="justify-start gap-2 text-[13px]"
                     onClick={() => {
                       setMobileOpen(false);
                       navigate("/account");
@@ -202,7 +202,7 @@ export function Navbar({
                   </Button>
                   <Button
                     variant="ghost"
-                    className="justify-start gap-2"
+                    className="justify-start gap-2 text-[13px]"
                     onClick={() => {
                       setMobileOpen(false);
                       handleSignOut();
@@ -213,7 +213,7 @@ export function Navbar({
                 </>
               ) : (
                 <Button
-                  className="w-full rounded-full bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
+                  className="w-full rounded-full bg-[#c96b8b] text-[13px] text-white hover:bg-[#b85d7c]"
                   onClick={() => {
                     setMobileOpen(false);
                     navigate("/auth");

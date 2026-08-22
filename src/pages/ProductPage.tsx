@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -66,16 +66,16 @@ export default function ProductPage() {
     return (
       <div className="min-h-screen bg-white">
         <Navbar cartCount={0} />
-        <div className="mx-auto max-w-[1360px] px-6 py-16">
+        <div className="mx-auto max-w-[1000px] px-6 py-10">
           <div className="animate-pulse">
-            <div className="h-4 w-32 rounded bg-secondary" />
-            <div className="mt-6 grid gap-12 md:grid-cols-2">
-              <div className="aspect-square rounded-[20px] bg-secondary" />
-              <div className="flex flex-col gap-4 py-4">
-                <div className="h-3 w-16 rounded bg-secondary" />
-                <div className="h-8 w-3/4 rounded bg-secondary" />
-                <div className="h-4 w-1/2 rounded bg-secondary" />
-                <div className="h-20 rounded bg-secondary" />
+            <div className="h-3 w-24 rounded bg-secondary" />
+            <div className="mt-6 grid gap-10 md:grid-cols-2">
+              <div className="aspect-square rounded-[18px] bg-secondary" />
+              <div className="flex flex-col gap-3 py-2">
+                <div className="h-3 w-14 rounded bg-secondary" />
+                <div className="h-6 w-3/4 rounded bg-secondary" />
+                <div className="h-4 w-1/3 rounded bg-secondary" />
+                <div className="h-16 rounded bg-secondary" />
               </div>
             </div>
           </div>
@@ -88,14 +88,15 @@ export default function ProductPage() {
     return (
       <div className="min-h-screen bg-white">
         <Navbar cartCount={0} />
-        <div className="mx-auto max-w-[1360px] px-6 py-20 text-center">
-          <h2 className="text-xl font-semibold">Product Not Found</h2>
-          <p className="mt-2 text-sm text-[#666]">
-            The product you are looking for may have been removed.
+        <div className="mx-auto max-w-[1000px] px-6 py-20 text-center">
+          <h2 className="text-lg font-medium">Product Not Found</h2>
+          <p className="mt-1 text-[13px] text-[#666]">
+            This product might have been removed or is no longer available.
           </p>
           <Button
-            className="mt-4 rounded-[6px]"
+            className="mt-4 rounded-full"
             variant="outline"
+            size="sm"
             onClick={() => navigate("/shop")}
           >
             Back to Shop
@@ -112,38 +113,36 @@ export default function ProductPage() {
         onCartClick={() => setCartOpen(true)}
       />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-6 md:py-10">
-        {/* Breadcrumb */}
+      <main className="mx-auto max-w-[1000px] px-6 py-6 md:py-8">
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.25 }}
         >
           <button
             onClick={() => navigate(-1)}
-            className="mb-5 inline-flex items-center gap-1.5 text-xs text-[#666] transition-colors hover:text-foreground"
+            className="mb-4 inline-flex items-center gap-1.5 text-[11px] text-[#888] transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3" />
             Back
           </button>
         </motion.div>
 
-        {/* Product */}
-        <div className="grid gap-10 md:grid-cols-2 md:gap-16">
+        <div className="grid gap-8 md:grid-cols-[1fr_1fr] md:gap-12">
           {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="relative aspect-square overflow-hidden rounded-[20px] bg-secondary">
+            <div className="relative aspect-square overflow-hidden rounded-[18px] bg-secondary">
               <img
                 src={product.imageUrl}
                 alt={product.name}
                 className="h-full w-full object-cover"
               />
               {product.badge && (
-                <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[11px] font-medium shadow-sm">
+                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-0.5 text-[10px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
                   {product.badge}
                 </span>
               )}
@@ -152,29 +151,24 @@ export default function ProductPage() {
 
           {/* Details */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
+            initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: 0.1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col"
           >
-            <p className="text-[11px] font-medium uppercase tracking-wider text-[#666]">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-[#999]">
               {product.category}
             </p>
-            <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            <h1 className="mt-1.5 font-display text-xl font-semibold tracking-tight text-foreground md:text-2xl">
               {product.name}
             </h1>
 
-            {/* Rating */}
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-2 flex items-center gap-1.5">
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className={`size-3.5 ${
+                    className={`size-3 ${
                       i < Math.round(product.rating)
                         ? "fill-[#c96b8b] text-[#c96b8b]"
                         : "fill-border text-border"
@@ -182,83 +176,80 @@ export default function ProductPage() {
                   />
                 ))}
               </div>
-              <span className="text-xs text-[#666]">
-                {product.rating} ({product.reviewCount} reviews)
+              <span className="text-[11px] text-[#888]">
+                {product.rating} · {product.reviewCount} reviews
               </span>
             </div>
 
-            {/* Price */}
-            <p className="mt-4 text-2xl font-semibold text-foreground">
+            <p className="mt-3 text-lg font-semibold text-foreground">
               {formatPrice(product.price)}
             </p>
 
-            {/* Description */}
-            <p className="mt-4 text-sm leading-relaxed text-[#666]">
+            <p className="mt-2.5 text-[13px] leading-relaxed text-[#666]">
               {product.description}
             </p>
 
-            {/* Stock */}
-            <div className="mt-4">
+            <div className="mt-3">
               {product.inStock ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-[11px] font-medium text-green-700">
-                  <span className="size-1.5 rounded-full bg-green-500" />
+                <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-[10px] font-medium text-green-700">
+                  <span className="size-1 rounded-full bg-green-500" />
                   In Stock
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-[11px] font-medium text-red-600">
-                  <span className="size-1.5 rounded-full bg-red-400" />
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-0.5 text-[10px] font-medium text-red-600">
+                  <span className="size-1 rounded-full bg-red-400" />
                   Out of Stock
                 </span>
               )}
             </div>
 
             {/* Quantity */}
-            <div className="mt-6 flex items-center gap-4">
-              <span className="text-sm text-[#666]">Quantity</span>
-              <div className="flex items-center gap-3 rounded-[6px] border border-border px-3 py-1.5">
+            <div className="mt-5 flex items-center gap-3">
+              <span className="text-[13px] text-[#666]">Qty</span>
+              <div className="flex items-center gap-2.5 rounded-full border border-border px-3 py-1">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="text-foreground/60 transition-colors hover:text-foreground"
+                  className="text-foreground/50 transition-colors hover:text-foreground"
                 >
-                  <Minus className="size-3.5" />
+                  <Minus className="size-3" />
                 </button>
-                <span className="w-6 text-center text-sm font-medium">
+                <span className="w-5 text-center text-[13px] font-medium">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="text-foreground/60 transition-colors hover:text-foreground"
+                  className="text-foreground/50 transition-colors hover:text-foreground"
                 >
-                  <Plus className="size-3.5" />
+                  <Plus className="size-3" />
                 </button>
               </div>
             </div>
 
             {/* Add to bag */}
             <Button
-              className="mt-6 w-full rounded-[6px] bg-[#c96b8b] py-6 text-white hover:bg-[#b85d7c]"
+              className="mt-5 w-full rounded-full bg-[#c96b8b] py-5 text-[13px] text-white hover:bg-[#b85d7c]"
               disabled={!product.inStock}
               onClick={handleAddToCart}
             >
-              <ShoppingBag className="mr-2 size-4" />
+              <ShoppingBag className="mr-1.5 size-3.5" />
               {addedToCart
-                ? "Added to Bag!"
+                ? "Added!"
                 : `Add to Bag — ${formatPrice(product.price * quantity)}`}
             </Button>
 
-            {/* Trust signals */}
-            <div className="mt-6 grid grid-cols-3 gap-3">
+            {/* Trust */}
+            <div className="mt-5 grid grid-cols-3 gap-2">
               {[
                 { icon: Truck, label: "Free shipping over ₹999" },
-                { icon: Shield, label: "Secure payment" },
+                { icon: Shield, label: "Secure checkout" },
                 { icon: RotateCcw, label: "30-day returns" },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="flex flex-col items-center gap-1.5 rounded-[6px] border border-[#c96b8b]/10 bg-[#fce4ec]/20 px-2 py-3 text-center"
+                  className="flex flex-col items-center gap-1 rounded-[8px] border border-border/40 px-1.5 py-2.5 text-center"
                 >
-                  <item.icon className="size-4 text-[#c96b8b]" />
-                  <span className="text-[10px] leading-tight text-[#666]">
+                  <item.icon className="size-3.5 text-[#c96b8b]" />
+                  <span className="text-[9px] leading-tight text-[#888]">
                     {item.label}
                   </span>
                 </div>
@@ -270,11 +261,13 @@ export default function ProductPage() {
         {/* Reviews */}
         <ReviewSection productId={id!} />
 
-        {/* Related products */}
+        {/* Related */}
         {related.length > 0 && (
-          <div className="mt-14 border-t border-border pt-10">
-            <h3 className="font-display text-lg font-semibold">You May Also Like</h3>
-            <div className="mt-5 grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-4">
+          <div className="mt-12 border-t border-border/50 pt-8">
+            <h3 className="font-display text-[17px] font-medium">
+              You might also like
+            </h3>
+            <div className="mt-5 grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4">
               {related.map((p, i) => (
                 <ProductCard
                   key={p._id}

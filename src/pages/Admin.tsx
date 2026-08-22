@@ -5,10 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { formatPrice } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Package,
   Calendar,
@@ -18,9 +15,7 @@ import {
   CheckCircle2,
   XCircle,
   Plus,
-  Pencil,
   Trash2,
-  X,
   Loader2,
 } from "lucide-react";
 
@@ -39,7 +34,6 @@ export default function Admin() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>("overview");
-  const [showProductForm, setShowProductForm] = useState(false);
 
   const isAdmin = (user as any)?.role === "admin";
 
@@ -56,15 +50,15 @@ export default function Admin() {
     return (
       <div className="min-h-screen bg-white">
         <Navbar cartCount={0} />
-        <div className="flex flex-col items-center justify-center py-32">
-          <XCircle className="size-12 text-[#666]/30" />
-          <h2 className="mt-4 text-lg font-semibold">Access Restricted</h2>
-          <p className="mt-1 text-sm text-[#666]">
-            You do not have administrator privileges.
+        <div className="flex flex-col items-center justify-center py-28">
+          <XCircle className="size-10 text-[#666]/20" />
+          <h2 className="mt-3 text-[15px] font-medium">Access Restricted</h2>
+          <p className="mt-1 text-[12px] text-[#888]">
+            You don't have administrator privileges.
           </p>
           <Button
             variant="outline"
-            className="mt-4 rounded-[6px]"
+            className="mt-3 rounded-full text-[12px]"
             onClick={() => navigate("/")}
           >
             Return Home
@@ -85,42 +79,38 @@ export default function Admin() {
     <div className="min-h-screen bg-white">
       <Navbar cartCount={0} />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-10 md:py-14">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
+      <main className="mx-auto max-w-[1100px] px-6 py-8 md:py-12">
+        <div>
+          <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#c96b8b]">
             Administration
           </p>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Dashboard
           </h1>
-          <p className="mt-2 text-sm text-[#666]">
-            Manage your products, appointments, and orders.
+          <p className="mt-1 text-[13px] text-[#666]">
+            Manage products, bookings, and orders.
           </p>
-        </motion.div>
+        </div>
 
         {/* Tabs */}
-        <div className="mt-6 flex gap-1 overflow-x-auto border-b border-border">
+        <div className="mt-5 flex gap-0.5 overflow-x-auto border-b border-border/50">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3.5 py-2 text-[13px] transition-colors ${
                 tab === t.id
-                  ? "border-[#c96b8b] text-foreground"
-                  : "border-transparent text-[#666] hover:text-foreground"
+                  ? "border-[#c96b8b] font-medium text-foreground"
+                  : "border-transparent text-[#888] hover:text-foreground"
               }`}
             >
-              <t.icon className="size-4" />
+              <t.icon className="size-3.5" />
               {t.label}
             </button>
           ))}
         </div>
 
-        {/* Content */}
-        <div className="mt-6">
+        <div className="mt-5">
           {tab === "overview" && (
             <OverviewTab
               products={products}
@@ -133,7 +123,6 @@ export default function Admin() {
             <ProductsTab
               products={products}
               onDelete={deleteProduct}
-              onAdd={() => setShowProductForm(true)}
             />
           )}
           {tab === "bookings" && (
@@ -154,7 +143,7 @@ export default function Admin() {
   );
 }
 
-/* ─── Overview Tab ─── */
+/* ─── Overview ─── */
 function OverviewTab({
   products,
   bookings,
@@ -167,42 +156,26 @@ function OverviewTab({
   users: any[] | undefined;
 }) {
   const stats = [
-    {
-      label: "Products",
-      value: products?.length ?? 0,
-      icon: Package,
-    },
-    {
-      label: "Orders",
-      value: orders?.length ?? 0,
-      icon: ShoppingCart,
-    },
-    {
-      label: "Bookings",
-      value: bookings?.length ?? 0,
-      icon: Calendar,
-    },
-    {
-      label: "Users",
-      value: users?.length ?? 0,
-      icon: Users,
-    },
+    { label: "Products", value: products?.length ?? 0, icon: Package },
+    { label: "Orders", value: orders?.length ?? 0, icon: ShoppingCart },
+    { label: "Bookings", value: bookings?.length ?? 0, icon: Calendar },
+    { label: "Users", value: users?.length ?? 0, icon: Users },
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((s) => (
         <div
           key={s.label}
-          className="rounded-[12px] border border-[#c96b8b]/10 bg-[#fce4ec]/20 p-5"
+          className="rounded-[10px] border border-border/50 p-4"
         >
-          <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-full bg-white">
-              <s.icon className="size-4 text-[#c96b8b]" />
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-8 items-center justify-center rounded-full bg-[#fce4ec]/50">
+              <s.icon className="size-3.5 text-[#c96b8b]" />
             </div>
             <div>
-              <p className="text-[11px] text-[#666]">{s.label}</p>
-              <p className="text-xl font-semibold">{s.value}</p>
+              <p className="text-[10px] text-[#999]">{s.label}</p>
+              <p className="text-[17px] font-semibold">{s.value}</p>
             </div>
           </div>
         </div>
@@ -211,15 +184,13 @@ function OverviewTab({
   );
 }
 
-/* ─── Products Tab ─── */
+/* ─── Products ─── */
 function ProductsTab({
   products,
   onDelete,
-  onAdd,
 }: {
   products: any[] | undefined;
   onDelete: any;
-  onAdd: () => void;
 }) {
   const [deleting, setDeleting] = useState<string | null>(null);
 
@@ -234,84 +205,64 @@ function ProductsTab({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-[#666]">
-          {products?.length ?? 0} products
-        </p>
-        <Button
-          size="sm"
-          className="rounded-[6px] bg-[#c96b8b] text-white hover:bg-[#b85d7c]"
-          onClick={onAdd}
-        >
-          <Plus className="mr-1 size-3.5" />
-          Add Product
-        </Button>
-      </div>
+      <p className="text-[12px] text-[#888]">
+        {products?.length ?? 0} products
+      </p>
 
-      <div className="mt-4 overflow-x-auto">
-        <table className="w-full text-left text-sm">
+      <div className="mt-3 overflow-x-auto">
+        <table className="w-full text-left text-[13px]">
           <thead>
-            <tr className="border-b border-border">
-              <th className="pb-3 pr-4 font-medium text-[#666]">Product</th>
-              <th className="pb-3 pr-4 font-medium text-[#666]">Category</th>
-              <th className="pb-3 pr-4 font-medium text-[#666]">Price</th>
-              <th className="pb-3 pr-4 font-medium text-[#666]">Rating</th>
-              <th className="pb-3 font-medium text-[#666]">Actions</th>
+            <tr className="border-b border-border/50">
+              <th className="pb-2 pr-3 font-medium text-[#888]">Product</th>
+              <th className="pb-2 pr-3 font-medium text-[#888]">Category</th>
+              <th className="pb-2 pr-3 font-medium text-[#888]">Price</th>
+              <th className="pb-2 pr-3 font-medium text-[#888]">Rating</th>
+              <th className="pb-2 font-medium text-[#888]"></th>
             </tr>
           </thead>
           <tbody>
             {products === undefined
               ? Array.from({ length: 4 }).map((_, i) => (
-                  <tr key={i} className="border-b border-border/50">
-                    <td className="py-3 pr-4">
-                      <div className="h-4 w-32 animate-pulse rounded bg-secondary" />
-                    </td>
-                    <td className="py-3 pr-4">
-                      <div className="h-4 w-16 animate-pulse rounded bg-secondary" />
-                    </td>
-                    <td className="py-3 pr-4">
-                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
-                    </td>
-                    <td className="py-3 pr-4">
-                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
-                    </td>
-                    <td className="py-3">
-                      <div className="h-4 w-8 animate-pulse rounded bg-secondary" />
-                    </td>
+                  <tr key={i} className="border-b border-border/30">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <td key={j} className="py-2.5 pr-3">
+                        <div className="h-3 w-20 animate-pulse rounded bg-secondary" />
+                      </td>
+                    ))}
                   </tr>
                 ))
               : products.map((product) => (
                   <tr
                     key={product._id}
-                    className="border-b border-border/50 transition-colors hover:bg-[#fce4ec]/10"
+                    className="border-b border-border/30 transition-colors hover:bg-[#faf8f7]"
                   >
-                    <td className="flex items-center gap-3 py-3 pr-4">
+                    <td className="flex items-center gap-2.5 py-2.5 pr-3">
                       <img
                         src={product.imageUrl}
                         alt={product.name}
-                        className="size-9 shrink-0 rounded-[6px] object-cover"
+                        className="size-8 shrink-0 rounded-[6px] object-cover"
                       />
                       <span className="font-medium">{product.name}</span>
                     </td>
-                    <td className="py-3 pr-4 text-[#666]">
+                    <td className="py-2.5 pr-3 text-[#888]">
                       {product.category}
                     </td>
-                    <td className="py-3 pr-4 font-medium">
+                    <td className="py-2.5 pr-3 font-medium">
                       {formatPrice(product.price)}
                     </td>
-                    <td className="py-3 pr-4 text-[#666]">
+                    <td className="py-2.5 pr-3 text-[#888]">
                       {product.rating} ({product.reviewCount})
                     </td>
-                    <td className="py-3">
+                    <td className="py-2.5">
                       <button
-                        className="text-[#666] transition-colors hover:text-red-500"
+                        className="text-[#888] transition-colors hover:text-red-500"
                         disabled={deleting === product._id}
                         onClick={() => handleDelete(product._id)}
                       >
                         {deleting === product._id ? (
-                          <Loader2 className="size-4 animate-spin" />
+                          <Loader2 className="size-3.5 animate-spin" />
                         ) : (
-                          <Trash2 className="size-4" />
+                          <Trash2 className="size-3.5" />
                         )}
                       </button>
                     </td>
@@ -324,7 +275,7 @@ function ProductsTab({
   );
 }
 
-/* ─── Bookings Tab ─── */
+/* ─── Bookings ─── */
 function BookingsTab({
   bookings,
   onUpdateStatus,
@@ -334,36 +285,38 @@ function BookingsTab({
 }) {
   return (
     <div>
-      <p className="text-sm text-[#666]">
+      <p className="text-[12px] text-[#888]">
         {bookings?.length ?? 0} total bookings
       </p>
 
       {bookings === undefined ? (
-        <div className="mt-4 py-8 text-center text-sm text-[#666]">
+        <div className="mt-3 py-6 text-center text-[12px] text-[#999]">
           Loading...
         </div>
       ) : bookings.length === 0 ? (
-        <div className="mt-4 rounded-[12px] border border-border/50 bg-secondary/30 py-12 text-center">
-          <Calendar className="mx-auto size-8 text-[#666]/30" />
-          <p className="mt-3 text-sm text-[#666]">No bookings yet</p>
+        <div className="mt-3 rounded-[12px] border border-border/50 bg-secondary/30 py-10 text-center">
+          <Calendar className="mx-auto size-7 text-[#666]/20" />
+          <p className="mt-2 text-[12px] text-[#888]">No bookings yet</p>
         </div>
       ) : (
-        <div className="mt-4 flex flex-col gap-3">
+        <div className="mt-3 flex flex-col gap-2">
           {bookings.map((booking: any) => (
             <div
               key={booking._id}
-              className="flex flex-col gap-3 rounded-[12px] border border-border/50 p-4 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-2.5 rounded-[10px] border border-border/50 p-3.5 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div className="flex items-center gap-3">
-                <div className="flex size-9 items-center justify-center rounded-full bg-[#fce4ec] text-[11px] font-medium text-[#c96b8b]">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-8 items-center justify-center rounded-full bg-[#fce4ec]/50 text-[10px] font-medium text-[#c96b8b]">
                   {booking.userName?.[0]?.toUpperCase() ?? "G"}
                 </div>
                 <div>
-                  <p className="text-sm font-medium">{booking.service}</p>
-                  <p className="text-xs text-[#666]">
+                  <p className="text-[13px] font-medium">
+                    {booking.service}
+                  </p>
+                  <p className="text-[11px] text-[#888]">
                     {booking.userName} · {booking.userEmail}
                   </p>
-                  <p className="text-xs text-[#666]">
+                  <p className="text-[11px] text-[#888]">
                     {new Date(booking.date).toLocaleDateString("en-IN", {
                       weekday: "short",
                       month: "short",
@@ -373,9 +326,9 @@ function BookingsTab({
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium capitalize ${statusConfig[booking.status] ?? ""}`}
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium capitalize ${statusConfig[booking.status] ?? ""}`}
                 >
                   {booking.status}
                 </span>
@@ -384,7 +337,7 @@ function BookingsTab({
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-7 rounded-[4px] text-[10px]"
+                      className="h-6 rounded-full text-[10px]"
                       onClick={() =>
                         onUpdateStatus({
                           bookingId: booking._id,
@@ -392,13 +345,13 @@ function BookingsTab({
                         })
                       }
                     >
-                      <CheckCircle2 className="mr-1 size-3" />
+                      <CheckCircle2 className="mr-0.5 size-2.5" />
                       Confirm
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-7 rounded-[4px] text-[10px] text-red-500 hover:bg-red-50"
+                      className="h-6 rounded-full text-[10px] text-red-500 hover:bg-red-50"
                       onClick={() =>
                         onUpdateStatus({
                           bookingId: booking._id,
@@ -406,7 +359,7 @@ function BookingsTab({
                         })
                       }
                     >
-                      <XCircle className="mr-1 size-3" />
+                      <XCircle className="mr-0.5 size-2.5" />
                       Cancel
                     </Button>
                   </div>
@@ -420,7 +373,7 @@ function BookingsTab({
   );
 }
 
-/* ─── Orders Tab ─── */
+/* ─── Orders ─── */
 function OrdersTab({
   orders,
   onUpdateStatus,
@@ -430,30 +383,30 @@ function OrdersTab({
 }) {
   return (
     <div>
-      <p className="text-sm text-[#666]">
+      <p className="text-[12px] text-[#888]">
         {orders?.length ?? 0} total orders
       </p>
 
       {orders === undefined ? (
-        <div className="mt-4 py-8 text-center text-sm text-[#666]">
+        <div className="mt-3 py-6 text-center text-[12px] text-[#999]">
           Loading...
         </div>
       ) : orders.length === 0 ? (
-        <div className="mt-4 rounded-[12px] border border-border/50 bg-secondary/30 py-12 text-center">
-          <ShoppingCart className="mx-auto size-8 text-[#666]/30" />
-          <p className="mt-3 text-sm text-[#666]">No orders yet</p>
+        <div className="mt-3 rounded-[12px] border border-border/50 bg-secondary/30 py-10 text-center">
+          <ShoppingCart className="mx-auto size-7 text-[#666]/20" />
+          <p className="mt-2 text-[12px] text-[#888]">No orders yet</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {orders.map((order: any) => (
             <div
               key={order._id}
-              className="rounded-[12px] border border-border/50 p-4"
+              className="rounded-[10px] border border-border/50 p-3.5"
             >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium">
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-[13px] font-medium">
                       {order.items.length} item
                       {order.items.length !== 1 ? "s" : ""}
                     </p>
@@ -463,27 +416,27 @@ function OrdersTab({
                       {order.status}
                     </span>
                   </div>
-                  <p className="mt-0.5 text-xs text-[#666]">
+                  <p className="mt-0.5 text-[11px] text-[#888]">
                     {new Date(order.createdAt).toLocaleDateString("en-IN", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
                     })}
                   </p>
-                  <div className="mt-2 flex gap-1.5">
+                  <div className="mt-1.5 flex gap-1">
                     {order.items.map((item: any, i: number) => (
                       <img
                         key={i}
                         src={item.imageUrl}
                         alt={item.name}
-                        className="size-8 rounded-[4px] object-cover"
+                        className="size-7 rounded-[4px] object-cover"
                         title={`${item.name} × ${item.quantity}`}
                       />
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <p className="text-base font-semibold">
+                <div className="flex items-center gap-2.5">
+                  <p className="text-[14px] font-semibold">
                     {formatPrice(order.total)}
                   </p>
                   <select
@@ -494,7 +447,7 @@ function OrdersTab({
                         status: e.target.value,
                       })
                     }
-                    className="rounded-[4px] border border-border bg-white px-2 py-1 text-xs"
+                    className="rounded-full border border-border bg-white px-2.5 py-1 text-[11px]"
                   >
                     {[
                       "pending",

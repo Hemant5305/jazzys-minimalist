@@ -28,9 +28,9 @@ function StatusBadge({ status }: { status: string }) {
   const Icon = config.icon;
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium capitalize ${config.color}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium capitalize ${config.color}`}
     >
-      <Icon className="size-3" />
+      <Icon className="size-2.5" />
       {status}
     </span>
   );
@@ -57,123 +57,103 @@ export default function Account() {
     <div className="min-h-screen bg-white">
       <Navbar cartCount={0} />
 
-      <main className="mx-auto max-w-[1360px] px-6 py-10 md:py-14">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#c96b8b]">
-            My Account
-          </p>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-            Welcome{(user as any)?.name ? `, ${(user as any).name}` : ""}
-          </h1>
-          <p className="mt-2 text-sm text-[#666]">
-            Manage your orders, bookings, and account details.
-          </p>
-        </motion.div>
-
-        {/* Stats */}
+      <main className="mx-auto max-w-[900px] px-6 py-8 md:py-12">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3"
+          transition={{ duration: 0.35 }}
+        >
+          <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#c96b8b]">
+            My Account
+          </p>
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            Welcome{(user as any)?.name ? `, ${(user as any).name}` : ""}
+          </h1>
+          <p className="mt-1 text-[13px] text-[#666]">
+            Your orders, appointments, and spending — all in one view.
+          </p>
+        </motion.div>
+
+        {/* Stats — horizontal row, not a uniform grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: 0.08 }}
+          className="mt-5 flex gap-3 overflow-x-auto"
         >
           {[
-            {
-              label: "Total Orders",
-              value: stats?.orderCount ?? 0,
-              icon: Package,
-            },
-            {
-              label: "Total Spent",
-              value: formatPrice(stats?.totalSpent ?? 0),
-              icon: CreditCard,
-            },
-            {
-              label: "Appointments",
-              value: stats?.bookingCount ?? 0,
-              icon: Calendar,
-            },
+            { label: "Orders", value: stats?.orderCount ?? 0, icon: Package },
+            { label: "Spent", value: formatPrice(stats?.totalSpent ?? 0), icon: CreditCard },
+            { label: "Bookings", value: stats?.bookingCount ?? 0, icon: Calendar },
           ].map((stat) => (
             <div
               key={stat.label}
-              className="flex items-center gap-4 rounded-[12px] border border-[#c96b8b]/10 bg-[#fce4ec]/20 p-5"
+              className="flex min-w-[140px] items-center gap-3 rounded-[12px] border border-border/50 p-4"
             >
-              <div className="flex size-10 items-center justify-center rounded-full bg-white">
-                <stat.icon className="size-4.5 text-[#c96b8b]" />
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#fce4ec]/50">
+                <stat.icon className="size-3.5 text-[#c96b8b]" />
               </div>
               <div>
-                <p className="text-[11px] font-medium text-[#666]">
-                  {stat.label}
-                </p>
-                <p className="text-xl font-semibold">{stat.value}</p>
+                <p className="text-[10px] text-[#999]">{stat.label}</p>
+                <p className="text-[15px] font-semibold">{stat.value}</p>
               </div>
             </div>
           ))}
         </motion.div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
+        <div className="mt-7 grid gap-6 lg:grid-cols-2">
           {/* Orders */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
+            transition={{ duration: 0.35, delay: 0.15 }}
           >
-            <h2 className="font-display text-lg font-semibold">Order History</h2>
+            <h2 className="text-[15px] font-medium">Order History</h2>
             {orders === undefined ? (
-              <div className="mt-4 py-8 text-center text-sm text-[#666]">
+              <div className="mt-3 py-6 text-center text-[12px] text-[#999]">
                 Loading...
               </div>
             ) : orders.length === 0 ? (
-              <div className="mt-4 rounded-[12px] border border-border/50 bg-secondary/30 py-12 text-center">
-                <Package className="mx-auto size-8 text-[#666]/30" />
-                <p className="mt-3 text-sm text-[#666]">No orders yet</p>
-                <p className="mt-1 text-xs text-[#999]">
-                  Your order history will appear here.
+              <div className="mt-3 rounded-[12px] border border-border/50 bg-secondary/30 py-10 text-center">
+                <Package className="mx-auto size-7 text-[#666]/20" />
+                <p className="mt-2 text-[13px] text-[#666]">No orders yet</p>
+                <p className="mt-0.5 text-[11px] text-[#999]">
+                  Your purchase history will show up here.
                 </p>
               </div>
             ) : (
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-3 flex flex-col gap-2.5">
                 {orders.map((order) => (
                   <div
                     key={order._id}
-                    className="rounded-[12px] border border-border/50 p-4"
+                    className="rounded-[10px] border border-border/50 p-3.5"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xs text-[#666]">
+                        <p className="text-[10px] text-[#999]">
                           {new Date(order.createdAt).toLocaleDateString(
                             "en-IN",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            },
+                            { month: "short", day: "numeric", year: "numeric" },
                           )}
                         </p>
-                        <p className="mt-0.5 text-sm font-medium">
-                          {order.items.length} item
-                          {order.items.length !== 1 ? "s" : ""}
+                        <p className="mt-0.5 text-[13px] font-medium">
+                          {order.items.length} item{order.items.length !== 1 ? "s" : ""}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold">
+                        <p className="text-[13px] font-semibold">
                           {formatPrice(order.total)}
                         </p>
                         <StatusBadge status={order.status} />
                       </div>
                     </div>
-                    <div className="mt-3 flex gap-2 overflow-x-auto">
+                    <div className="mt-2 flex gap-1.5 overflow-x-auto">
                       {order.items.map((item, i) => (
                         <img
                           key={i}
                           src={item.imageUrl}
                           alt={item.name}
-                          className="size-10 shrink-0 rounded-[6px] object-cover"
+                          className="size-8 shrink-0 rounded-[4px] object-cover"
                           title={`${item.name} × ${item.quantity}`}
                         />
                       ))}
@@ -186,36 +166,36 @@ export default function Account() {
 
           {/* Bookings */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
+            transition={{ duration: 0.35, delay: 0.2 }}
           >
-            <h2 className="font-display text-lg font-semibold">Salon Appointments</h2>
+            <h2 className="text-[15px] font-medium">Salon Appointments</h2>
             {bookings === undefined ? (
-              <div className="mt-4 py-8 text-center text-sm text-[#666]">
+              <div className="mt-3 py-6 text-center text-[12px] text-[#999]">
                 Loading...
               </div>
             ) : bookings.length === 0 ? (
-              <div className="mt-4 rounded-[12px] border border-border/50 bg-secondary/30 py-12 text-center">
-                <Calendar className="mx-auto size-8 text-[#666]/30" />
-                <p className="mt-3 text-sm text-[#666]">No appointments yet</p>
-                <p className="mt-1 text-xs text-[#999]">
-                  Book your first salon appointment to get started.
+              <div className="mt-3 rounded-[12px] border border-border/50 bg-secondary/30 py-10 text-center">
+                <Calendar className="mx-auto size-7 text-[#666]/20" />
+                <p className="mt-2 text-[13px] text-[#666]">No appointments yet</p>
+                <p className="mt-0.5 text-[11px] text-[#999]">
+                  Book your first salon visit to get started.
                 </p>
               </div>
             ) : (
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-3 flex flex-col gap-2.5">
                 {bookings.map((booking) => (
                   <div
                     key={booking._id}
-                    className="rounded-[12px] border border-border/50 p-4"
+                    className="rounded-[10px] border border-border/50 p-3.5"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium">
+                        <p className="text-[13px] font-medium">
                           {booking.service}
                         </p>
-                        <p className="mt-0.5 text-xs text-[#666]">
+                        <p className="mt-0.5 text-[11px] text-[#888]">
                           {new Date(booking.date).toLocaleDateString("en-IN", {
                             weekday: "short",
                             month: "short",

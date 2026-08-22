@@ -1,64 +1,77 @@
 import { useState, useEffect } from "react";
-import { Sparkles } from "lucide-react";
 
 export function SplashScreen({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState<"enter" | "show" | "exit">("enter");
+  const [phase, setPhase] = useState<"name" | "reveal" | "done">("name");
 
   useEffect(() => {
-    const showTimer = setTimeout(() => setPhase("show"), 100);
-    const exitTimer = setTimeout(() => setPhase("exit"), 2200);
-    const doneTimer = setTimeout(() => onComplete(), 2800);
+    // Phase 1: show name on black (0-1.4s)
+    // Phase 2: curtain lifts (1.4-2.4s)
+    // Phase 3: done (2.4s)
+    const revealTimer = setTimeout(() => setPhase("reveal"), 1400);
+    const doneTimer = setTimeout(() => {
+      setPhase("done");
+      onComplete();
+    }, 2600);
 
     return () => {
-      clearTimeout(showTimer);
-      clearTimeout(exitTimer);
+      clearTimeout(revealTimer);
       clearTimeout(doneTimer);
     };
   }, [onComplete]);
 
+  if (phase === "done") return null;
+
   return (
-    <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white ${
-        phase === "exit" ? "splash-exit" : ""
-      }`}
-    >
-      {/* Soft background glow */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30"
-          style={{
-            width: "600px",
-            height: "600px",
-            background:
-              "radial-gradient(circle, rgba(201,107,139,0.15) 0%, rgba(201,107,139,0.05) 50%, transparent 70%)",
-          }}
-        />
-      </div>
+    <div className="fixed inset-0 z-[9999]">
+      {/* The actual site content sits underneath — not rendered here, but the splash covers it */}
 
-      <div className="relative flex flex-col items-center gap-5">
-        {/* Logo icon */}
-        <div className="splash-fade-in flex size-14 items-center justify-center rounded-full bg-[#c96b8b]/10">
-          <Sparkles className="size-6 text-[#c96b8b]" />
-        </div>
-
-        {/* Salon name */}
-        <div className="splash-delay-1 text-center">
-          <h1 className="font-display text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
-            Jazzy's
-          </h1>
-          <p className="mt-0.5 text-lg font-light tracking-wide text-[#c96b8b]">
-            Salon & Beauty
-          </p>
-        </div>
-
-        {/* Decorative line */}
-        <div className="splash-delay-2 flex flex-col items-center gap-2">
-          <div className="splash-line h-[1px] bg-[#c96b8b]/30" />
-          <p className="splash-delay-2 text-[11px] font-medium uppercase tracking-[0.3em] text-[#999]">
-            Where beauty meets elegance
-          </p>
+      {/* Black curtain that lifts upward to reveal the site */}
+      <div
+        className={`absolute inset-0 bg-black ${
+          phase === "reveal" ? "splash-curtain-lift" : ""
+        }`}
+        style={{
+          transformOrigin: "top",
+        }}
+      >
+        {/* Salon name centered on the black curtain */}
+        <div className="flex h-full flex-col items-center justify-center">
+          <div
+            className={`text-center ${
+              phase === "reveal" ? "splash-name-hold" : "splash-name-enter"
+            }`}
+          >
+            <h1 className="text-4xl font-light tracking-[0.15em] text-white md:text-6xl">
+              Jazzy's
+            </h1>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="block h-[1px] w-8 bg-white/30" />
+              <p className="text-[11px] font-medium uppercase tracking-[0.35em] text-white/50">
+                Salon & Beauty
+              </p>
+              <span className="block h-[1px] w-8 bg-white/30" />
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* During reveal, the name stays pinned in the viewport above the curtain */}
+      {phase === "reveal" && (
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center">
+          <div className="splash-name-pin">
+            <h1 className="text-4xl font-light tracking-[0.15em] text-white md:text-6xl">
+              Jazzy's
+            </h1>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="block h-[1px] w-8 bg-white/30" />
+              <p className="text-[11px] font-medium uppercase tracking-[0.35em] text-white/50">
+                Salon & Beauty
+              </p>
+              <span className="block h-[1px] w-8 bg-white/30" />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

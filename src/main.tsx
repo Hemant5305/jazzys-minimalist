@@ -16,6 +16,7 @@ const Shop = lazy(() => import("./pages/Dashboard.tsx"));
 const ProductPage = lazy(() => import("./pages/ProductPage.tsx"));
 const Account = lazy(() => import("./pages/Account.tsx"));
 const Admin = lazy(() => import("./pages/Admin.tsx"));
+const Checkout = lazy(() => import("./pages/Checkout.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 function RouteLoading() {
@@ -141,6 +142,14 @@ function AppShell() {
               element={
                 <RequireAuth>
                   <Account />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <RequireAuth>
+                  <Checkout />
                 </RequireAuth>
               }
             />
