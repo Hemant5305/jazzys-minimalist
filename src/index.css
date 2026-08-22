@@ -153,24 +153,24 @@
   background: #bbb;
 }
 
-/* Splash screen — flickering Beauty reveal */
+/* Splash screen — flickering name reveal */
 @keyframes splashNameEnter {
-  0% { opacity: 0; transform: translateY(18px); }
+  0% { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes splashFlicker {
   0%, 100% { opacity: 1; }
-  8% { opacity: 0.2; }
-  16% { opacity: 1; }
-  20% { opacity: 0.4; }
-  28% { opacity: 1; }
-  45% { opacity: 1; }
-  48% { opacity: 0.15; }
-  52% { opacity: 1; }
-  55% { opacity: 0.3; }
-  58% { opacity: 1; }
-  72% { opacity: 1; }
-  75% { opacity: 0.25; }
+  6% { opacity: 0.15; }
+  12% { opacity: 1; }
+  18% { opacity: 0.3; }
+  24% { opacity: 1; }
+  40% { opacity: 1; }
+  44% { opacity: 0.1; }
+  48% { opacity: 1; }
+  52% { opacity: 0.2; }
+  56% { opacity: 1; }
+  70% { opacity: 1; }
+  74% { opacity: 0.15; }
   78% { opacity: 1; }
 }
 @keyframes splashFadeOut {
@@ -182,7 +182,7 @@
   opacity: 0;
 }
 .splash-flicker {
-  animation: splashFlicker 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+  animation: splashFlicker 1.4s steps(1) 0.1s both;
 }
 .splash-fade-out {
   animation: splashFadeOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
