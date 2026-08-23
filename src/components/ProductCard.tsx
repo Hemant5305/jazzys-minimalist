@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { Star, ShoppingBag, Minus, Plus, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 
 interface Product {
@@ -43,11 +42,12 @@ export function ProductCard({
   const cornerClass = corners[index % corners.length];
 
   const handleAdd = () => {
-    onAddToCart?.(product, qty);
+    if (!onAddToCart) return;
+    onAddToCart(product, qty);
     setAdded(true);
     setShowQty(false);
     setQty(1);
-    setTimeout(() => setAdded(false), 1500);
+    setTimeout(() => setAdded(false), 1800);
   };
 
   return (
@@ -144,7 +144,11 @@ export function ProductCard({
             </div>
           ) : (
             <button
-              className="flex size-7 items-center justify-center rounded-full border border-border/50 transition-colors hover:border-[#c96b8b]/30 hover:bg-[#c96b8b]/5"
+              className={`flex size-7 items-center justify-center rounded-full border transition-all ${
+                added
+                  ? "border-[#c96b8b] bg-[#c96b8b] text-white"
+                  : "border-border/50 hover:border-[#c96b8b]/30 hover:bg-[#c96b8b]/5"
+              }`}
               onClick={(e) => {
                 e.stopPropagation();
                 if (added) return;
@@ -152,7 +156,7 @@ export function ProductCard({
               }}
             >
               {added ? (
-                <Check className="size-3 text-[#c96b8b]" />
+                <Check className="size-3" />
               ) : (
                 <ShoppingBag className="size-3" />
               )}

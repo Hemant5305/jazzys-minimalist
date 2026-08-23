@@ -20,12 +20,6 @@ function SheetClose({
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
 }
 
-function SheetPortal({
-  ...props
-}: React.ComponentProps<typeof SheetPrimitive.Portal>) {
-  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />
-}
-
 function SheetOverlay({
   className,
   ...props
@@ -51,7 +45,7 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left"
 }) {
   return (
-    <SheetPortal>
+    <>
       <SheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"
@@ -75,7 +69,7 @@ function SheetContent({
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
-    </SheetPortal>
+    </>
   )
 }
 

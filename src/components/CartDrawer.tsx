@@ -48,7 +48,7 @@ export function CartDrawer({
   };
 
   return (
-    <Sheet open={open} onOpenChange={onClose}>
+    <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent className="flex w-full flex-col sm:w-[380px]">
         <SheetHeader>
           <SheetTitle className="text-[15px] font-medium">
