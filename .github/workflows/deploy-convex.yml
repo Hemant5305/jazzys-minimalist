@@ -1,0 +1,30 @@
+name: Deploy Convex
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-convex
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Convex
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy Convex functions
+        run: bunx convex dev --once
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
